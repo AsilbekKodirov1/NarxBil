@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #FAFAFF;
   --foreground: #0F172A;
-  --primary-purple: #7C3AED;
-  --secondary-pink: #EC4899;
-  --accent-amber: #F59E0B;
-  --accent-cyan: #06B6D4;
-  --accent-lime: #84CC16;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(226, 232, 240, 0.8);
 }
 
 .dark {
   --background: #0B0B1A;
   --foreground: #F8FAFC;
+  --card-bg: rgba(18, 18, 38, 0.85);
+  --card-border: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
@@ -42,15 +43,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glassmorphism yordamchi sinflari */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--card-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.dark .glass-panel {
-  background: rgba(15, 15, 35, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border);
 }
