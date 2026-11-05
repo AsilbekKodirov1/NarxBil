@@ -3,9 +3,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
-import { X, ScanBarcode, RotateCcw } from "lucide-react";
+import { X, ScanBarcode, CameraOff } from "lucide-react";
 import { playSuccessChime } from "@/lib/audio";
+import { FastBarcodeScanner } from "@/lib/scanner-engine";
 
 interface AdminBarcodeScannerModalProps {
   isOpen: boolean;
@@ -18,71 +18,51 @@ export function AdminBarcodeScannerModal({
   onClose,
   onDetected,
 }: AdminBarcodeScannerModalProps) {
-  const scannerId = "admin-product-qr-reader";
-  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const scannerRef = useRef<FastBarcodeScanner | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
 
     let isMounted = true;
+    setErrorMsg(null);
+    setIsReady(false);
 
-    const startScanner = async () => {
-      setErrorMsg(null);
+    const scanner = new FastBarcodeScanner();
+    scannerRef.current = scanner;
+
+    const start = async () => {
+      // DOM da video elementi ulanishini kutish
+      await new Promise((r) => setTimeout(r, 150));
+      if (!isMounted || !videoRef.current) return;
+
       try {
-        if (!scannerRef.current) {
-          scannerRef.current = new Html5Qrcode(scannerId, {
-            formatsToSupport: [
-              Html5QrcodeSupportedFormats.EAN_13,
-              Html5QrcodeSupportedFormats.EAN_8,
-              Html5QrcodeSupportedFormats.CODE_128,
-              Html5QrcodeSupportedFormats.UPC_A,
-              Html5QrcodeSupportedFormats.UPC_E,
-            ],
-            verbose: false,
-          });
-        }
-
-        const devices = await Html5Qrcode.getCameras();
-        if (!devices || devices.length === 0) {
-          if (isMounted) setErrorMsg("Kamera topilmadi");
-          return;
-        }
-
-        let cameraId = devices[0].id;
-        const back = devices.find((d) => d.label.toLowerCase().includes("back") || d.label.toLowerCase().includes("rear"));
-        if (back) cameraId = back.id;
-
-        await scannerRef.current.start(
-          cameraId,
-          {
-            fps: 15,
-            qrbox: { width: 250, height: 160 },
-          },
-          (decodedText) => {
-            playSuccessChime();
-            onDetected(decodedText);
-            onClose();
-          },
-          () => {}
-        );
+        await scanner.start(videoRef.current, (result) => {
+          if (!isMounted) return;
+          playSuccessChime();
+          if (typeof navigator !== "undefined" && navigator.vibrate) {
+            navigator.vibrate([40, 50, 40]);
+          }
+          onDetected(result.text);
+          onClose();
+        });
+        if (isMounted) setIsReady(true);
       } catch (err) {
         console.warn("Admin kamera xatosi:", err);
-        if (isMounted) setErrorMsg("Kameraga ulanib bo'lmadi");
+        if (isMounted) {
+          setErrorMsg("Kamerani ishga tushirib bo'lmadi yoki ruxsat berilmadi");
+        }
       }
     };
 
-    // Modal ochilganda biroz kechiktirib ishga tushirish (DOM tayyor bo'lishi uchun)
-    const timer = setTimeout(startScanner, 250);
+    start();
 
     return () => {
       isMounted = false;
-      clearTimeout(timer);
-      if (scannerRef.current) {
-        try {
-          scannerRef.current.stop();
-        } catch {}
-      }
+      scanner.stop();
+      scannerRef.current = null;
     };
   }, [isOpen, onDetected, onClose]);
 
@@ -118,22 +98,31 @@ export function AdminBarcodeScannerModal({
             </div>
 
             <div className="relative w-full h-[280px] bg-black flex items-center justify-center overflow-hidden">
-              <div id={scannerId} className="w-full h-full object-cover" />
+              <video
+                ref={videoRef}
+                playsInline
+                muted
+                autoPlay
+                className="w-full h-full object-cover"
+              />
 
               {/* Lazer chizig'i animatsiyasi */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <div className="relative w-[250px] h-[160px] border-2 border-dashed border-cyan-400/80 rounded-2xl overflow-hidden">
-                  <motion.div
-                    animate={{ top: ["0%", "100%", "0%"] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute left-0 right-0 h-0.5 bg-cyan-400 shadow-[0_0_8px_#06B6D4]"
-                  />
+              {isReady && !errorMsg && (
+                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  <div className="relative w-[260px] h-[160px] border-2 border-dashed border-cyan-400/80 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                    <motion.div
+                      animate={{ top: ["5%", "90%", "5%"] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-0 right-0 h-0.5 bg-cyan-400 shadow-[0_0_10px_#06B6D4]"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
               {errorMsg && (
                 <div className="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-6 text-center">
-                  <p className="text-xs text-rose-400 mb-3">{errorMsg}</p>
+                  <CameraOff className="w-8 h-8 text-rose-400 mb-2" />
+                  <p className="text-xs text-rose-300 mb-3">{errorMsg}</p>
                   <button
                     onClick={onClose}
                     className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold"
@@ -145,7 +134,7 @@ export function AdminBarcodeScannerModal({
             </div>
 
             <div className="p-3 text-center text-[11px] text-slate-400">
-              Shtrix kodni ramka ichiga keltiring, u avtomatik aniqlanadi
+              Shtrix kodni ramka ichiga keltiring, u bir zumda aniqlanadi
             </div>
           </motion.div>
         </>
@@ -153,4 +142,3 @@ export function AdminBarcodeScannerModal({
     </AnimatePresence>
   );
 }
-
