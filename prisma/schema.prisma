@@ -1,0 +1,81 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  passwordHash  String?       // Email+parol foydalanuvchilari uchun bcrypt hash
+  googleId      String?       @unique // Google OAuth identifikatori
+  fullName      String
+  avatarUrl     String?
+  role          Role          @default(CUSTOMER)
+  createdAt     DateTime      @default(now())
+
+  // Aloqalar
+  stores        Store[]       @relation("StoreOwner")
+  scanHistories ScanHistory[]
+
+  @@map("users")
+}
+
+model Store {
+  id        String    @id @default(cuid())
+  name      String
+  address   String?
+  ownerId   String
+  owner     User      @relation("StoreOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  products  Product[]
+
+  @@map("stores")
+}
+
+model Product {
+  id            String        @id @default(cuid())
+  storeId       String
+  store         Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  name          String
+  barcode       String        // EAN-13, EAN-8, Code128, UPC-A va boshqalar
+  price         Int           // Narxi butun son ko'rinishida (so'mda, masalan: 12500)
+  discountPrice Int?          // Chegirmali narx (agar chegirma bo'lsa)
+  imageUrl      String?       // Mahsulot rasmi URL manzili
+  category      String?       // Kategoriya: "Sut mahsulotlari", "Non", "Ichimliklar" va h.k.
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  scanHistories ScanHistory[]
+
+  @@unique([storeId, barcode])
+  @@index([barcode])
+  @@map("products")
+}
+
+model ScanHistory {
+  id        String   @id @default(cuid())
+  userId    String?  // Mehmon bo'lsa null bo'lishi mumkin
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  scannedAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([productId])
+  @@map("scan_histories")
+}
+
