@@ -95,9 +95,9 @@ export function BottomNav() {
           <span className="text-[10px] tracking-tight">Savat</span>
         </Link>
 
-        {/* 5. Profil yoki Admin */}
+        {/* 5. Profil / Kirish */}
         <Link
-          href={session ? (isAdmin ? "/admin" : "/login") : "/login"}
+          href={session ? (isAdmin ? "/admin" : "/history") : "/login"}
           className={`flex flex-col items-center justify-center flex-1 py-1 transition ${
             pathname === "/login" || pathname === "/register" || pathname.startsWith("/admin")
               ? "text-purple-600 font-bold"
@@ -110,7 +110,7 @@ export function BottomNav() {
             <User className="w-5 h-5 mb-0.5" />
           )}
           <span className="text-[10px] tracking-tight">
-            {session ? (isAdmin ? "Admin" : "Profil") : "Kirish"}
+            {session ? (isAdmin ? "Boshqaruv" : "Profil") : "Kirish"}
           </span>
         </Link>
       </div>

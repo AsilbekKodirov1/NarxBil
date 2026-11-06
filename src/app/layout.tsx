@@ -36,7 +36,12 @@ export const metadata: Metadata = {
   keywords: ["narx", "shtrix kod", "skaner", "supermarket", "narxbil", "kassa", "o'zbekiston"],
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/icons/icon.svg",
+    apple: "/icons/icon-192.png",
   },
 };
 

@@ -48,7 +48,21 @@ function LoginForm() {
         toastError(res.error);
       } else {
         toastSuccess("Xush kelibsiz! Tizimga muvaffaqiyatli kirdingiz.");
-        router.push(callbackUrl);
+        
+        // Agar admin bo'lsa, to'g'ridan-to'g'ri admin panelga yo'naltirish
+        try {
+          const sessionRes = await fetch("/api/auth/session");
+          const sessionData = await sessionRes.json();
+          if (sessionData?.user?.role === "ADMIN") {
+            router.push("/admin");
+            router.refresh();
+            return;
+          }
+        } catch {
+          // Xato bo'lsa standart callbackUrl ga yo'naltirish
+        }
+
+        router.push(callbackUrl === "/admin" ? "/" : callbackUrl);
         router.refresh();
       }
     } catch {

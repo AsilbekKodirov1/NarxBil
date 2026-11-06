@@ -14,7 +14,7 @@ import {
   Sparkles, 
   Smartphone, 
   CheckCircle2, 
-  Store 
+  LogIn
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
@@ -248,30 +248,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. DO'KON EGASI / ADMIN PANEL BANNERI */}
+      {/* 4. TIZIMGA KIRISH VA IMKONIYATLAR BANNERI */}
       <section className="py-12 px-4 max-w-6xl mx-auto w-full">
         <div className="rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-950 to-slate-900 text-white p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+          {/* Bezak nurlar */}
+          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-purple-500/20 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-pink-500/20 blur-3xl pointer-events-none" />
+
           <div className="relative z-10 max-w-xl space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-cyan-300 text-xs font-bold">
-              <Store className="w-3.5 h-3.5" />
-              <span>Do&apos;kon egalari uchun</span>
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Shaxsiy hisob</span>
             </div>
 
             <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
-              O&apos;z do&apos;koningiz mahsulotlarini kiriting va mijozlarga qulaylik yarating
+              Profilingizga kiring va barcha xaridlaringizni saqlang
             </h3>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Admin panel orqali tovarlar narxini istalgan payt yangilang, CSV orqali minglab tovarlarni bir yo&apos;la yuklang va skanerlash statistikasini kuzatib boring.
+              Tizimga kirish orqali skanerlangan mahsulotlar tarixini doimo qo&apos;l ostingizda saqlashingiz, xarid savatini boshqarishingiz va xarajatlaringizni tahlil qilishingiz mumkin.
             </p>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
-                href="/admin"
+                href="/login"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white text-purple-900 font-extrabold text-xs shadow-lg hover:bg-slate-100 transition"
               >
-                <span>Admin panelga o&apos;tish</span>
-                <ArrowRight className="w-4 h-4" />
+                <LogIn className="w-4 h-4 text-purple-700" />
+                <span>Kirish</span>
+                <ArrowRight className="w-4 h-4 text-purple-700" />
+              </Link>
+              <Link
+                href="/scan"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition"
+              >
+                <ScanBarcode className="w-4 h-4 text-cyan-300" />
+                <span>Skanerlash</span>
               </Link>
             </div>
           </div>
@@ -300,9 +312,6 @@ export default function HomePage() {
             </Link>
             <Link href="/login" className="hover:text-purple-600 transition">
               Kirish
-            </Link>
-            <Link href="/admin" className="hover:text-purple-600 transition">
-              Admin
             </Link>
           </div>
 

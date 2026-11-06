@@ -84,10 +84,10 @@ export function Navbar() {
           {isAdmin && (
             <Link
               href="/admin"
-              className="flex items-center gap-1 text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/60 px-3 py-1.5 rounded-xl border border-purple-200/60 dark:border-purple-800 font-bold hover:bg-purple-100 dark:hover:bg-purple-900/60 transition"
+              className="flex items-center gap-1.5 text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/60 px-3 py-1.5 rounded-xl border border-purple-200/60 dark:border-purple-800 text-xs font-bold hover:bg-purple-100 dark:hover:bg-purple-900/60 transition"
             >
               <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              <span>Admin Panel</span>
+              <span>Boshqaruv</span>
             </Link>
           )}
         </nav>
