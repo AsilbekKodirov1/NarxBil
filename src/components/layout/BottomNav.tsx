@@ -11,7 +11,8 @@ import {
   ScanBarcode, 
   ShoppingBag, 
   User, 
-  ShieldCheck 
+  ShieldCheck,
+  LogIn 
 } from "lucide-react";
 import { getCartFromStorage } from "@/lib/cart";
 
@@ -106,8 +107,10 @@ export function BottomNav() {
         >
           {isAdmin ? (
             <ShieldCheck className="w-5 h-5 mb-0.5 text-purple-600" />
-          ) : (
+          ) : session ? (
             <User className="w-5 h-5 mb-0.5" />
+          ) : (
+            <LogIn className="w-5 h-5 mb-0.5" />
           )}
           <span className="text-[10px] tracking-tight">
             {session ? (isAdmin ? "Boshqaruv" : "Profil") : "Kirish"}

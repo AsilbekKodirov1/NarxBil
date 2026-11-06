@@ -175,18 +175,18 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className={`hidden sm:inline-flex items-center gap-1.5 text-sm font-bold px-3 py-2 rounded-xl transition ${
-                  isScanPage
-                    ? "text-slate-200 hover:bg-white/10"
-                    : "text-slate-700 dark:text-slate-200 hover:text-purple-600 hover:bg-slate-100 dark:hover:bg-slate-800"
-                }`}
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow-md shadow-purple-500/20 hover:opacity-95 active:scale-95 transition"
               >
                 <LogIn className="w-4 h-4" />
                 <span>Kirish</span>
               </Link>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-1.5 text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 px-4 py-2 rounded-xl shadow-md shadow-purple-500/20 hover:opacity-95 active:scale-95 transition"
+                className={`hidden sm:inline-flex items-center gap-1.5 text-sm font-bold px-3 py-2 rounded-xl transition ${
+                  isScanPage
+                    ? "text-slate-200 hover:bg-white/10"
+                    : "text-slate-700 dark:text-slate-200 hover:text-purple-600 hover:bg-slate-100 dark:hover:bg-slate-800"
+                }`}
               >
                 <span>Ro&apos;yxatdan o&apos;tish</span>
               </Link>
