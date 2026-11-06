@@ -14,11 +14,14 @@ import {
   ArrowRight, 
   Sparkles, 
   AlertCircle,
-  Tag
+  Tag,
+  Bot
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { BudgetController } from "@/components/cart/BudgetController";
+import { AiAssistantModal } from "@/components/cart/AiAssistantModal";
 import { BRAND_CONFIG } from "@/config/brand";
 import { 
   CartItem, 
@@ -34,6 +37,7 @@ export default function CartPage() {
   const { success: toastSuccess, info: toastInfo } = useToast();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
 
   const loadCart = () => {
     setItems(getCartFromStorage());
@@ -140,8 +144,12 @@ export default function CartPage() {
           /* TO'LA SAVAT RO'YXATI VA HISOBLAGICH */
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
             {/* Tovar kartalari ro'yxati (2 ustun) */}
-            <div className="lg:col-span-2 space-y-3">
-              <AnimatePresence>
+            <div className="lg:col-span-2 space-y-4">
+              {/* Byudjet nazorati moduli */}
+              <BudgetController currentTotal={totalSum} />
+
+              <div className="space-y-3">
+                <AnimatePresence>
                 {items.map((item) => {
                   const effectivePrice = item.discountPrice ?? item.price;
                   const itemTotal = effectivePrice * item.quantity;
@@ -252,8 +260,9 @@ export default function CartPage() {
                 </Link>
               </div>
             </div>
+          </div>
 
-            {/* O'ng tomon: Jami hisob-kitob (Sticky Summary Card) */}
+          {/* O'ng tomon: Jami hisob-kitob (Sticky Summary Card) */}
             <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xl shadow-purple-500/5 sticky top-24 space-y-4">
               <div className="border-b border-slate-100 pb-4">
                 <h2 className="text-lg font-extrabold text-slate-900">
@@ -297,16 +306,37 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <Link
-                href="/scan"
-                className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2"
-              >
-                <ScanBarcode className="w-4 h-4" />
-                <span>Skanerlashda davom etish</span>
-              </Link>
+              <div className="pt-1 space-y-2.5">
+                {/* AI Maslahatchi tugmasi */}
+                <button
+                  type="button"
+                  onClick={() => setIsAiModalOpen(true)}
+                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-purple-100 via-pink-100 to-amber-100 border border-purple-200/80 text-purple-950 font-bold text-xs flex items-center justify-center gap-2 hover:opacity-95 transition shadow-sm active:scale-95"
+                >
+                  <Bot className="w-4 h-4 text-purple-700" />
+                  <span>AI Maslahatchi (Retsept & Tahlil)</span>
+                  <Sparkles className="w-3.5 h-3.5 text-pink-600 animate-pulse" />
+                </button>
+
+                <Link
+                  href="/scan"
+                  className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2"
+                >
+                  <ScanBarcode className="w-4 h-4" />
+                  <span>Skanerlashda davom etish</span>
+                </Link>
+              </div>
             </div>
           </div>
         )}
+
+        {/* AI Assistent Modali */}
+        <AiAssistantModal
+          isOpen={isAiModalOpen}
+          onClose={() => setIsAiModalOpen(false)}
+          items={items}
+          budget={totalSum}
+        />
       </main>
       <BottomNav />
     </div>
