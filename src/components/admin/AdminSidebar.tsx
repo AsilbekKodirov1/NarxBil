@@ -42,8 +42,8 @@ export function AdminSidebar() {
         {/* Yuqori logotip */}
         <div className="pb-4 border-b border-slate-100">
           <Logo iconSize={28} textSize="text-xl" isLink={true} />
-          <div className="mt-2.5 flex items-center gap-1.5 px-2.5 py-1 bg-purple-50 text-purple-700 rounded-lg text-xs font-bold border border-purple-200/50">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="mt-2.5 flex items-center gap-1.5 px-2.5 py-1 bg-red-50 text-red-700 rounded-lg text-xs font-bold border border-red-200/50">
+            <ShieldCheck className="w-3.5 h-3.5 text-red-600" />
             <span>Admin Boshqaruvi</span>
           </div>
         </div>
@@ -58,7 +58,7 @@ export function AdminSidebar() {
                 href={item.href}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition ${
                   item.active
-                    ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-md shadow-purple-500/20"
+                    ? "bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white shadow-md shadow-red-500/20"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
@@ -76,17 +76,17 @@ export function AdminSidebar() {
           </div>
           <Link
             href="/scan"
-            className="flex items-center justify-between px-3.5 py-2 rounded-xl text-slate-600 hover:text-purple-600 hover:bg-purple-50 text-xs font-semibold transition"
+            className="flex items-center justify-between px-3.5 py-2 rounded-xl text-slate-600 hover:text-red-600 hover:bg-red-50 text-xs font-semibold transition"
           >
             <span className="flex items-center gap-2">
-              <ScanBarcode className="w-4 h-4 text-purple-600" />
+              <ScanBarcode className="w-4 h-4 text-red-600" />
               <span>Skaner sahifasi</span>
             </span>
             <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </Link>
           <Link
             href="/"
-            className="flex items-center justify-between px-3.5 py-2 rounded-xl text-slate-600 hover:text-purple-600 hover:bg-purple-50 text-xs font-semibold transition"
+            className="flex items-center justify-between px-3.5 py-2 rounded-xl text-slate-600 hover:text-red-600 hover:bg-red-50 text-xs font-semibold transition"
           >
             <span className="flex items-center gap-2">
               <Home className="w-4 h-4 text-slate-400" />
@@ -100,7 +100,7 @@ export function AdminSidebar() {
       {/* Profil va Chiqish */}
       <div className="pt-4 border-t border-slate-100">
         <div className="flex items-center gap-3 mb-3 px-1">
-          <div className="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 to-blue-900 text-white flex items-center justify-center font-bold text-sm shadow-sm">
             {session?.user?.name ? session.user.name.charAt(0) : "A"}
           </div>
           <div className="flex-1 min-w-0">

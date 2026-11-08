@@ -60,7 +60,7 @@ export function ManualBarcodeInput({
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-slate-900 font-extrabold text-lg">
-                <Barcode className="w-5 h-5 text-purple-600" />
+                <Barcode className="w-5 h-5 text-red-600" />
                 <span>Kodni qo&apos;lda kiritish</span>
               </div>
               <button
@@ -86,14 +86,14 @@ export function ManualBarcodeInput({
                   placeholder="Masalan: 4780000150123"
                   autoFocus
                   required
-                  className="w-full min-h-[50px] px-4 py-3 text-lg font-mono tracking-wider font-semibold rounded-2xl border-2 border-purple-200 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-500/10 transition"
+                  className="w-full min-h-[50px] px-4 py-3 text-lg font-mono tracking-wider font-semibold rounded-2xl border-2 border-red-200 focus:border-red-600 focus:outline-none focus:ring-4 focus:ring-red-500/10 transition"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={!barcode.trim()}
-                className="w-full min-h-[48px] py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2 disabled:opacity-40"
+                className="w-full min-h-[48px] py-3 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/35 active:scale-[0.98] transition flex items-center justify-center gap-2 disabled:opacity-40"
               >
                 <Search className="w-4 h-4" />
                 <span>Narxni tekshirish</span>
@@ -103,7 +103,7 @@ export function ManualBarcodeInput({
             {/* Namunaviy tezkor kodlar */}
             <div className="mt-6 pt-4 border-t border-slate-100">
               <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <Sparkles className="w-3.5 h-3.5 text-red-500" />
                 <span>Sinash uchun tezkor tovarlar:</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -111,7 +111,7 @@ export function ManualBarcodeInput({
                   <button
                     key={item.code}
                     onClick={() => handleSelectSample(item.code)}
-                    className="text-xs font-medium py-1.5 px-2.5 rounded-xl bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200/50 transition"
+                    className="text-xs font-medium py-1.5 px-2.5 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 border border-red-200/50 transition"
                   >
                     {item.name}
                   </button>

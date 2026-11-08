@@ -140,7 +140,7 @@ export function ProductBottomSheet({
                   <div className="flex flex-col gap-2.5">
                     <button
                       onClick={onManualInputClick}
-                      className="w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-md transition"
+                      className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 hover:opacity-95 text-white font-bold text-sm shadow-lg shadow-red-500/25 transition active:scale-[0.98]"
                     >
                       Kodni qo&apos;lda kiritib ko&apos;rish
                     </button>
@@ -184,7 +184,7 @@ export function ProductBottomSheet({
 
                     <div className="flex-1 min-w-0">
                       {product.category && (
-                        <span className="inline-block text-[11px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded-md mb-1.5 uppercase tracking-wide">
+                        <span className="inline-block text-[11px] font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 rounded-md mb-1.5 uppercase tracking-wide">
                           {product.category}
                         </span>
                       )}
@@ -204,18 +204,18 @@ export function ProductBottomSheet({
                     </div>
                   </div>
 
-                  {/* Narx qismi */}
-                  <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 dark:from-purple-950/40 via-pink-50/50 dark:via-pink-950/30 to-amber-50/30 dark:to-amber-950/20 border border-purple-100/60 dark:border-purple-800/40">
+                  {/* Narx qismi (OPTOVIK Red / Navy uslubida) */}
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-red-50/80 dark:from-red-950/40 via-rose-50/50 dark:via-rose-950/30 to-blue-50/30 dark:to-blue-950/20 border border-red-100/70 dark:border-red-900/40">
                     <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
                       Do&apos;kondagi narxi
                     </div>
                     <div className="flex items-baseline gap-3">
                       {product.discountPrice ? (
                         <>
-                          <div className="text-3xl sm:text-4xl font-extrabold text-purple-700 dark:text-purple-400 font-price tracking-tight">
+                          <div className="text-3xl sm:text-4xl font-extrabold text-red-600 dark:text-red-400 font-price tracking-tight">
                             {product.discountPriceFormatted}
                           </div>
-                          <div className="text-base sm:text-lg text-slate-400 font-price line-through decoration-rose-500 decoration-2">
+                          <div className="text-base sm:text-lg text-slate-400 font-price line-through decoration-red-500 decoration-2">
                             {product.priceFormatted}
                           </div>
                         </>
@@ -264,7 +264,7 @@ export function ProductBottomSheet({
                       className={`w-full min-h-[50px] py-3.5 px-4 rounded-2xl font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98] ${
                         isAdded
                           ? "bg-emerald-600 text-white shadow-emerald-600/30"
-                          : "bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 text-white shadow-purple-500/25 hover:opacity-95"
+                          : "bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white shadow-red-500/25 hover:opacity-95"
                       }`}
                     >
                       {isAdded ? (

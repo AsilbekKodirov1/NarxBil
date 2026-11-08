@@ -140,7 +140,7 @@ export default function AdminProductsPage() {
                 setProductToEdit(null);
                 setIsFormOpen(true);
               }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold shadow-md shadow-purple-500/20 hover:opacity-95 transition flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white text-xs font-bold shadow-md shadow-red-500/20 hover:opacity-95 transition flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               <span>Yangi mahsulot</span>
@@ -162,7 +162,7 @@ export default function AdminProductsPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600"
               />
             </div>
 
@@ -177,7 +177,7 @@ export default function AdminProductsPage() {
                   setCategory(e.target.value);
                   setPage(1);
                 }}
-                className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
+                className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 bg-white"
               >
                 <option value="ALL">Barcha kategoriyalar</option>
                 {availableCategories.map((c) => (
@@ -207,7 +207,7 @@ export default function AdminProductsPage() {
                   {isLoading ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-400">
-                        <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-purple-600" />
+                        <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-red-600" />
                         Yuklanmoqda...
                       </td>
                     </tr>
@@ -266,7 +266,7 @@ export default function AdminProductsPage() {
                         {/* Kategoriya */}
                         <td className="py-3 px-4">
                           {item.category ? (
-                            <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-200/50">
+                            <span className="text-[11px] font-semibold text-red-700 bg-red-50 px-2 py-0.5 rounded-lg border border-red-200/50">
                               {item.category}
                             </span>
                           ) : (
@@ -296,7 +296,7 @@ export default function AdminProductsPage() {
                                 setProductToEdit(item);
                                 setIsFormOpen(true);
                               }}
-                              className="p-2 rounded-xl text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition"
+                              className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition"
                               title="Tahrirlash"
                             >
                               <Edit3 className="w-4 h-4" />

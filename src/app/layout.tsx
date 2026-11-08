@@ -63,7 +63,7 @@ export default function RootLayout({
       className={`${sora.variable} ${plusJakarta.variable} ${spaceGrotesk.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#FAFAFF] dark:bg-[#0B0B1A] text-slate-900 dark:text-slate-100 selection:bg-purple-500 selection:text-white transition-colors duration-200">
+      <body className="min-h-full flex flex-col font-sans bg-[#FAFAFF] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 selection:bg-red-600 selection:text-white transition-colors duration-200">
         <ThemeProvider>
           <AuthProvider>
             <ToastProvider>

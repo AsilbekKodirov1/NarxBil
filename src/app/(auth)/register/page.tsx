@@ -81,8 +81,8 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-[#FAFAFF]">
       {/* Orqa fon bezakli gradient bloblari */}
-      <div className="absolute top-[-10%] right-[-10%] w-[350px] h-[350px] rounded-full bg-purple-400/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-pink-400/20 blur-3xl pointer-events-none" />
+      <div className="absolute top-[-10%] right-[-10%] w-[350px] h-[350px] rounded-full bg-red-500/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, y: 25 }}
@@ -99,7 +99,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Ro'yxatdan o'tish kartasi */}
-        <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-2xl shadow-purple-500/10 rounded-3xl p-6 sm:p-8">
+        <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-2xl shadow-red-500/10 rounded-3xl p-6 sm:p-8">
           <div className="mb-6">
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
               Ro&apos;yxatdan o&apos;tish
@@ -124,7 +124,7 @@ export default function RegisterPage() {
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Ali Valiyev"
                   required
-                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition"
+                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition"
                 />
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ali@misol.uz"
                   required
-                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition"
+                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition"
                 />
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition"
+                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition"
                 />
               </div>
             </div>
@@ -181,7 +181,7 @@ export default function RegisterPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition"
+                  className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition"
                 />
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full min-h-[48px] mt-2 py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full min-h-[48px] mt-2 py-3 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -207,7 +207,7 @@ export default function RegisterPage() {
             Akkauntingiz bormi?{" "}
             <Link
               href="/login"
-              className="text-purple-600 hover:text-purple-700 font-bold hover:underline"
+              className="text-red-600 hover:text-red-700 font-bold hover:underline"
             >
               Kirish
             </Link>

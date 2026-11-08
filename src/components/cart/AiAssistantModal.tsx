@@ -103,16 +103,16 @@ export function AiAssistantModal({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="fixed inset-x-4 top-[8%] sm:top-[12%] max-w-lg mx-auto bg-white rounded-3xl shadow-2xl z-50 overflow-hidden border border-slate-100 flex flex-col max-h-[82vh]"
           >
-            {/* Modal sarlavhasi */}
-            <div className="p-4 sm:p-5 bg-gradient-to-r from-purple-700 via-pink-600 to-amber-500 text-white flex items-center justify-between shadow-md">
+            {/* Modal sarlavhasi (OPTOVIK Red-Navy) */}
+            <div className="p-4 sm:p-5 bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white flex items-center justify-between shadow-md">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-inner">
-                  <Bot className="w-6 h-6 text-cyan-200" />
+                  <Bot className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-black text-base tracking-tight">AI Maslahatchi</h3>
-                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-cyan-400 text-slate-950">
+                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-white text-red-600">
                       Smart
                     </span>
                   </div>
@@ -136,7 +136,7 @@ export function AiAssistantModal({
                 onClick={() => fetchAdvice("recipe")}
                 className={`py-2 px-3.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 flex-shrink-0 ${
                   activeTab === "recipe"
-                    ? "bg-purple-600 text-white shadow-sm"
+                    ? "bg-red-600 text-white shadow-sm"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
                 }`}
               >
@@ -148,7 +148,7 @@ export function AiAssistantModal({
                 onClick={() => fetchAdvice("budget_advice")}
                 className={`py-2 px-3.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 flex-shrink-0 ${
                   activeTab === "budget_advice"
-                    ? "bg-pink-600 text-white shadow-sm"
+                    ? "bg-blue-900 text-white shadow-sm"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
                 }`}
               >
@@ -161,7 +161,7 @@ export function AiAssistantModal({
             <div className="flex-1 p-5 overflow-y-auto space-y-4 text-sm text-slate-700 leading-relaxed">
               {isLoading ? (
                 <div className="py-12 flex flex-col items-center justify-center text-center">
-                  <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-3 animate-spin">
+                  <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mb-3 animate-spin">
                     <Loader2 className="w-6 h-6" />
                   </div>
                   <h4 className="font-bold text-sm text-slate-800 mb-1">
@@ -194,12 +194,12 @@ export function AiAssistantModal({
                   value={customQuestion}
                   onChange={(e) => setCustomQuestion(e.target.value)}
                   placeholder="Xarid bo'yicha savolingizni yozing..."
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition"
                 />
                 <button
                   type="submit"
                   disabled={!customQuestion.trim() || isLoading}
-                  className="p-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white transition disabled:opacity-50"
+                  className="p-2.5 rounded-xl bg-gradient-to-r from-red-600 to-blue-900 hover:opacity-90 text-white transition disabled:opacity-50"
                   title="Yuborish"
                 >
                   <Send className="w-4 h-4" />

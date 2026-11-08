@@ -118,11 +118,11 @@ export default function HistoryPage() {
         {/* Sarlavha */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2.5">
-              <History className="w-7 h-7 text-amber-500" />
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
+              <History className="w-7 h-7 text-red-600" />
               <span>Skanerlash Tarixi</span>
             </h1>
-            <p className="text-slate-500 text-xs sm:text-sm mt-1">
+            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1">
               Siz ilgari narxini tekshirgan barcha mahsulotlar
             </p>
           </div>
@@ -143,29 +143,29 @@ export default function HistoryPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/60 p-8 sm:p-12 text-center shadow-xl shadow-purple-500/5"
+            className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-3xl border border-slate-200/60 dark:border-slate-800 p-8 sm:p-12 text-center shadow-xl shadow-red-500/5"
           >
-            <div className="w-20 h-20 mx-auto mb-5 rounded-3xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-500 shadow-sm">
+            <div className="w-20 h-20 mx-auto mb-5 rounded-3xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 flex items-center justify-center text-red-600 shadow-sm">
               <LogIn className="w-10 h-10" />
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mb-2">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">
               Tarixni saqlash uchun tizimga kiring
             </h2>
-            <p className="text-slate-500 text-sm max-w-md mx-auto mb-6">
+            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
               Siz hozir mehmon rejimidasiz. Skanerlangan tovarlaringiz keyingi safar ham saqlanib turishi uchun hisobingizga kiring.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/login"
-                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:opacity-95 transition"
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:opacity-95 transition"
               >
                 Tizimga kirish
               </Link>
               <Link
                 href="/register"
-                className="px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition"
+                className="px-6 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm hover:bg-slate-50 transition"
               >
                 Ro&apos;yxatdan o&apos;tish
               </Link>
@@ -187,9 +187,9 @@ export default function HistoryPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/60 p-8 sm:p-14 text-center shadow-xl shadow-purple-500/5 my-6"
+            className="bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/60 p-8 sm:p-14 text-center shadow-xl shadow-red-500/5 my-6"
           >
-            <div className="w-20 h-20 mx-auto mb-5 rounded-3xl bg-amber-50 flex items-center justify-center text-amber-500">
+            <div className="w-20 h-20 mx-auto mb-5 rounded-3xl bg-red-50 flex items-center justify-center text-red-600">
               <History className="w-10 h-10" />
             </div>
 
@@ -202,7 +202,7 @@ export default function HistoryPage() {
 
             <Link
               href="/scan"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-amber-500 text-white font-bold text-sm shadow-lg shadow-purple-500/20 hover:opacity-95 transition"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/35 transition active:scale-95"
             >
               <ScanBarcode className="w-4 h-4" />
               <span>Skanerlashni boshlash</span>
@@ -217,7 +217,7 @@ export default function HistoryPage() {
               <div key={group.title} className="space-y-3">
                 {/* Guruh sarlavhasi (Bugun, Kecha...) */}
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-3 py-1 rounded-xl border border-purple-200/50">
+                  <span className="text-xs font-bold uppercase tracking-wider text-red-600 bg-red-50 px-3 py-1 rounded-xl border border-red-200/50">
                     {group.title}
                   </span>
                   <div className="flex-1 border-t border-slate-200/60" />
@@ -273,7 +273,7 @@ export default function HistoryPage() {
                           </h3>
 
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="font-price font-extrabold text-sm text-purple-700">
+                            <span className="font-price font-extrabold text-sm text-red-600">
                               {BRAND_CONFIG.currency.format(effectivePrice)}
                             </span>
                             {item.product.discountPrice && (
@@ -291,7 +291,7 @@ export default function HistoryPage() {
                           className={`p-2.5 rounded-xl transition flex items-center justify-center flex-shrink-0 ${
                             isAdded
                               ? "bg-emerald-600 text-white"
-                              : "bg-slate-100 text-slate-600 hover:bg-purple-600 hover:text-white group-hover:scale-105"
+                              : "bg-slate-100 text-slate-600 hover:bg-red-600 hover:text-white group-hover:scale-105"
                           }`}
                           title="Savatga qo'shish"
                         >

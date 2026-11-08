@@ -56,7 +56,7 @@ export function PwaManager() {
           className="fixed bottom-20 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-sm z-50 bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-3xl shadow-2xl border border-slate-700/80 flex items-center justify-between gap-3"
         >
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-amber-500 flex items-center justify-center text-white flex-shrink-0 shadow-md">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-red-600 via-rose-600 to-blue-900 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-red-600/30">
               <Download className="w-5 h-5" />
             </div>
             <div className="min-w-0">
@@ -72,7 +72,7 @@ export function PwaManager() {
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={handleInstallClick}
-              className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md transition"
+              className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:opacity-95 text-white font-bold text-xs shadow-md shadow-red-600/30 transition"
             >
               O&apos;rnatish
             </button>

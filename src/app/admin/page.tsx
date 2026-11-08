@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
     return (
       <div className="min-h-screen bg-[#FAFAFF] flex items-center justify-center">
         <div className="flex flex-col items-center gap-2">
-          <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
+          <Loader2 className="w-8 h-8 text-red-600 animate-spin" />
           <p className="text-xs font-semibold text-slate-500">Admin panel yuklanmoqda...</p>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
           </p>
           <Link
             href="/"
-            className="px-4 py-2 rounded-xl bg-purple-600 text-white font-bold text-xs"
+            className="px-4 py-2 rounded-xl bg-red-600 text-white font-bold text-xs"
           >
             Bosh sahifaga qaytish
           </Link>
@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
 
             <button
               onClick={() => setIsProductModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold shadow-md shadow-purple-500/20 hover:opacity-95 transition flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white text-xs font-bold shadow-md shadow-red-500/20 hover:opacity-95 transition flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               <span>Yangi mahsulot</span>
@@ -150,13 +150,13 @@ export default function AdminDashboardPage() {
                 </p>
                 <Link
                   href="/admin/products"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-purple-600 hover:text-purple-700 mt-2"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 mt-2"
                 >
                   <span>Boshqarish</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center">
                 <Package className="w-6 h-6" />
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function AdminDashboardPage() {
               </h3>
               <Link
                 href="/admin/products"
-                className="text-xs font-bold text-purple-600 hover:underline"
+                className="text-xs font-bold text-red-600 hover:underline"
               >
                 Barchasini ko&apos;rish
               </Link>
@@ -234,7 +234,7 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <div className="text-right">
-                    <p className="font-price font-bold text-purple-700">{p.priceFormatted}</p>
+                    <p className="font-price font-bold text-red-600">{p.priceFormatted}</p>
                     <p className="text-xs font-semibold text-slate-400">
                       {p.scanCount} marta skanerlangan
                     </p>

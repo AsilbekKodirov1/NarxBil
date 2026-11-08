@@ -205,8 +205,8 @@ export function BarcodeScanner() {
       <div className="relative z-20 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
         <div className="flex items-center gap-2">
           <span className="flex h-3 w-3 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
           </span>
           <span className="text-white text-xs font-bold tracking-wider uppercase drop-shadow">
             Skaner faol
@@ -266,7 +266,7 @@ export function BarcodeScanner() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => startCamera()}
-                className="w-full py-2.5 px-4 rounded-xl bg-purple-600 text-white font-bold text-xs hover:bg-purple-700 transition flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 px-4 rounded-xl bg-red-600 text-white font-bold text-xs hover:bg-red-700 transition flex items-center justify-center gap-1.5 shadow-md shadow-red-600/30"
               >
                 <RotateCcw className="w-4 h-4" />
                 <span>Qayta urinish</span>
@@ -281,13 +281,13 @@ export function BarcodeScanner() {
           </div>
         ) : (
           <div className="relative w-[280px] h-[180px]">
-            {/* Burchak belgilari (Corner brackets) */}
-            <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-cyan-400 rounded-tl-2xl shadow-[0_0_15px_rgba(6,182,212,0.8)]" />
-            <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-cyan-400 rounded-tr-2xl shadow-[0_0_15px_rgba(6,182,212,0.8)]" />
-            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-cyan-400 rounded-bl-2xl shadow-[0_0_15px_rgba(6,182,212,0.8)]" />
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-cyan-400 rounded-br-2xl shadow-[0_0_15px_rgba(6,182,212,0.8)]" />
+            {/* Burchak belgilari (OPTOVIK Red corner brackets) */}
+            <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-red-500 rounded-tl-2xl shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
+            <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-red-500 rounded-tr-2xl shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-red-500 rounded-bl-2xl shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-red-500 rounded-br-2xl shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
 
-            {/* Animatsiyali lazer chizig'i */}
+            {/* Animatsiyali qizil lazer chizig'i (OPTOVIK Neon Red Laser) */}
             <motion.div
               animate={{
                 top: ["5%", "90%", "5%"],
@@ -297,15 +297,15 @@ export function BarcodeScanner() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#06B6D4]"
+              className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_14px_#EF4444]"
             >
-              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-2 bg-cyan-400/30 blur-sm rounded-full" />
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-2 bg-red-400/30 blur-sm rounded-full" />
             </motion.div>
 
             {/* Yuklanish / Qidiruv indikatori */}
             {isProcessing && (
               <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center text-white">
-                <div className="w-8 h-8 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin mb-2" />
+                <div className="w-8 h-8 border-3 border-red-500 border-t-transparent rounded-full animate-spin mb-2" />
                 <span className="text-xs font-bold tracking-wide">Narx qidirilmoqda...</span>
               </div>
             )}

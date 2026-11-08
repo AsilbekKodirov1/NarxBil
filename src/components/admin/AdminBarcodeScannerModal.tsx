@@ -86,7 +86,7 @@ export function AdminBarcodeScannerModal({
           >
             <div className="flex items-center justify-between p-4 border-b border-slate-800">
               <div className="flex items-center gap-2 font-bold text-sm">
-                <ScanBarcode className="w-5 h-5 text-purple-400" />
+                <ScanBarcode className="w-5 h-5 text-red-500" />
                 <span>Shtrix kodni skanerlash</span>
               </div>
               <button
@@ -109,11 +109,11 @@ export function AdminBarcodeScannerModal({
               {/* Lazer chizig'i animatsiyasi */}
               {isReady && !errorMsg && (
                 <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                  <div className="relative w-[260px] h-[160px] border-2 border-dashed border-cyan-400/80 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                  <div className="relative w-[260px] h-[160px] border-2 border-dashed border-red-500/80 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(239,68,68,0.4)]">
                     <motion.div
                       animate={{ top: ["5%", "90%", "5%"] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute left-0 right-0 h-0.5 bg-cyan-400 shadow-[0_0_10px_#06B6D4]"
+                      className="absolute left-0 right-0 h-0.5 bg-red-500 shadow-[0_0_12px_#EF4444]"
                     />
                   </div>
                 </div>

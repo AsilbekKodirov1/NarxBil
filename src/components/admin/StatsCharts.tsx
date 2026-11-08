@@ -38,7 +38,7 @@ export function StatsCharts({ weeklyTrend, top5Products }: StatsChartsProps) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="font-extrabold text-sm sm:text-base text-slate-900 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-purple-600" />
+              <TrendingUp className="w-4 h-4 text-red-600" />
               <span>Oxirgi 7 kunlik skanerlashlar</span>
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -51,9 +51,9 @@ export function StatsCharts({ weeklyTrend, top5Products }: StatsChartsProps) {
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={weeklyTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
-                <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#7C3AED" stopOpacity={0.0} />
+                <linearGradient id="redNavyGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#DC2626" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#1E3A8A" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
@@ -73,10 +73,10 @@ export function StatsCharts({ weeklyTrend, top5Products }: StatsChartsProps) {
                 type="monotone"
                 dataKey="skanerlar"
                 name="Skanerlashlar"
-                stroke="#7C3AED"
+                stroke="#DC2626"
                 strokeWidth={3}
                 fillOpacity={1}
-                fill="url(#purpleGradient)"
+                fill="url(#redNavyGradient)"
               />
             </AreaChart>
           </ResponsiveContainer>

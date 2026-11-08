@@ -216,7 +216,7 @@ export function ProductFormDialog({
                     </div>
 
                     <div className="flex-1">
-                      <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-purple-50 text-purple-700 hover:bg-purple-100 text-xs font-bold cursor-pointer transition border border-purple-200/50">
+                      <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 text-xs font-bold cursor-pointer transition border border-red-200/50">
                         <Upload className="w-3.5 h-3.5" />
                         <span>{isUploading ? "Yuklanmoqda..." : "Rasm tanlash"}</span>
                         <input
@@ -247,7 +247,7 @@ export function ProductFormDialog({
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Masalan: Musaffo Sut 3.2% 1L"
                     required
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 font-medium"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 font-medium"
                   />
                 </div>
 
@@ -263,15 +263,15 @@ export function ProductFormDialog({
                       onChange={(e) => setBarcode(e.target.value.replace(/[^0-9A-Za-z]/g, ""))}
                       placeholder="4780000150123"
                       required
-                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 font-semibold"
+                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 font-semibold"
                     />
                     <button
                       type="button"
                       onClick={() => setIsScannerOpen(true)}
-                      className="px-3 py-2.5 rounded-xl bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200/50 text-xs font-bold transition flex items-center gap-1.5"
+                      className="px-3 py-2.5 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 border border-red-200/50 text-xs font-bold transition flex items-center gap-1.5"
                       title="Kamera bilan skanerlash"
                     >
-                      <ScanBarcode className="w-4 h-4 text-purple-600" />
+                      <ScanBarcode className="w-4 h-4 text-red-600" />
                       <span className="hidden sm:inline">Skanerlash</span>
                     </button>
                   </div>
@@ -290,7 +290,7 @@ export function ProductFormDialog({
                       placeholder="13500"
                       required
                       min={1}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-price font-bold focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-price font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600"
                     />
                   </div>
 
@@ -304,7 +304,7 @@ export function ProductFormDialog({
                       onChange={(e) => setDiscountPrice(e.target.value)}
                       placeholder="11900 (ixtiyoriy)"
                       min={1}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-price font-bold focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-price font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600"
                     />
                   </div>
                 </div>
@@ -319,7 +319,7 @@ export function ProductFormDialog({
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     placeholder="Masalan: Sut mahsulotlari, Ichimliklar, Non"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 font-medium"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 font-medium"
                   />
                 </div>
 
@@ -335,7 +335,7 @@ export function ProductFormDialog({
                   <button
                     type="submit"
                     disabled={isSubmitting || isUploading}
-                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 text-white font-bold text-sm shadow-md shadow-purple-500/20 hover:opacity-95 active:scale-[0.98] transition flex items-center gap-2 disabled:opacity-50"
+                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-md shadow-red-500/20 hover:opacity-95 active:scale-[0.98] transition flex items-center gap-2 disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
