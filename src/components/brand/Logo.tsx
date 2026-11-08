@@ -1,6 +1,7 @@
 // src/components/brand/Logo.tsx
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface LogoProps {
   className?: string;
@@ -8,80 +9,66 @@ interface LogoProps {
   showText?: boolean;
   textSize?: string;
   isLink?: boolean;
+  variant?: "default" | "box" | "full";
 }
 
 export function Logo({
   className = "",
-  iconSize = 32,
+  iconSize = 36,
   showText = true,
-  textSize = "text-xl",
   isLink = true,
+  variant = "default",
 }: LogoProps) {
+  // Hisoblangan o'lchamlar
+  // logo-transparent.png o'lchami: 302 x 136 (nisbat: 2.22)
+  const logoHeight = Math.max(30, Math.round(iconSize * 1.05));
+  const logoWidth = Math.round(logoHeight * 2.22);
+
   const content = (
-    <div className={`flex items-center gap-2.5 font-bold tracking-tight select-none ${className}`}>
-      {/* 1. OPTOVIK 3D quti belgisi (Rasmdagi uslubda) */}
-      <div 
-        className="relative flex items-center justify-center rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-blue-900 p-2 text-white shadow-lg shadow-red-500/20 transition-transform duration-300 hover:scale-105 active:scale-95"
-        style={{ width: iconSize + 12, height: iconSize + 12 }}
-      >
-        <svg
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full drop-shadow"
+    <div className={`inline-flex items-center select-none group ${className}`}>
+      {variant === "box" || !showText ? (
+        /* Faqat 3D quti belgisi */
+        <div
+          className="relative flex items-center justify-center rounded-xl overflow-hidden transition-transform duration-300 group-hover:scale-105 active:scale-95"
+          style={{ width: iconSize, height: iconSize }}
         >
-          {/* 3D Box tanasi (Navy) */}
-          <path
-            d="M24 6L40 14V34L24 42L8 34V14L24 6Z"
-            fill="#1E3A8A"
-            stroke="#FFFFFF"
-            strokeWidth="2"
-            strokeLinejoin="round"
+          <Image
+            src="/brand/logo-box.png"
+            alt="OPTOVIK"
+            width={iconSize}
+            height={iconSize}
+            className="w-full h-full object-contain"
+            priority
           />
-          {/* Qutining tepa qopqog'i */}
-          <path
-            d="M24 6L40 14L24 22L8 14L24 6Z"
-            fill="#2563EB"
-            stroke="#FFFFFF"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
+        </div>
+      ) : variant === "full" ? (
+        /* To'liq kvadrat qizil fonli original logotip */
+        <div
+          className="relative rounded-2xl overflow-hidden shadow-lg shadow-red-500/20 transition-transform duration-300 group-hover:scale-105 active:scale-95 border border-red-500/30"
+          style={{ width: iconSize * 2, height: iconSize * 2 }}
+        >
+          <Image
+            src="/brand/logo-full.png"
+            alt="OPTOVIK.UZ"
+            fill
+            className="object-cover"
+            priority
           />
-          {/* Oq lenta (Tape) */}
-          <path
-            d="M24 6L24 22L32 18L32 2L24 6Z"
-            fill="#FFFFFF"
-            opacity="0.9"
+        </div>
+      ) : (
+        /* Haqiqiy yuklangan OPTOVIK.UZ emblemasi (3D quti + OPTOVIK.UZ kapsulasi) */
+        <div
+          className="relative flex items-center transition-transform duration-300 group-hover:scale-105 active:scale-95"
+          style={{ height: logoHeight, width: logoWidth }}
+        >
+          <Image
+            src="/brand/logo-transparent.png"
+            alt="OPTOVIK.UZ"
+            width={302}
+            height={136}
+            className="w-full h-full object-contain drop-shadow-[0_2px_8px_rgba(220,38,38,0.2)]"
+            priority
           />
-          {/* Qizil ko'rsatkich belgisi (Ikkita qizil strelka ↑↑) */}
-          <g transform="translate(12, 19) scale(0.55)">
-            <rect x="2" y="2" width="16" height="14" rx="2" fill="#FFFFFF" />
-            <path d="M7 11V6M7 6L5 8M7 6L9 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M13 11V6M13 6L11 8M13 6L15 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <line x1="5" y1="13" x2="15" y2="13" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round" />
-          </g>
-        </svg>
-
-        {/* Pulsatsiyali faollik nuri */}
-        <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-        </span>
-      </div>
-
-      {/* 2. OPTOVIK.UZ brend matni (Rasmdagi kapsula uslubida) */}
-      {showText && (
-        <div className="flex flex-col">
-          <div className="flex items-center tracking-tight leading-none">
-            <span className={`${textSize} font-black text-slate-900 dark:text-white tracking-tighter`}>
-              OPTOVIK
-            </span>
-            <span className={`${textSize} font-black text-red-600 tracking-tighter`}>
-              .UZ
-            </span>
-          </div>
-          <span className="text-[9px] uppercase font-extrabold tracking-widest text-slate-400 dark:text-slate-500 mt-0.5">
-            Smart Supermarket
-          </span>
         </div>
       )}
     </div>
@@ -89,7 +76,7 @@ export function Logo({
 
   if (isLink) {
     return (
-      <Link href="/" className="inline-flex items-center focus:outline-none group">
+      <Link href="/" className="inline-flex items-center focus:outline-none">
         {content}
       </Link>
     );

@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ShoppingBag, Sparkles } from "lucide-react";
 import { BRAND_CONFIG } from "@/config/brand";
@@ -35,7 +36,21 @@ export function PhoneMockup() {
           {/* Orqa fon kamerasi simulyatsiyasi */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#DC2626_1px,transparent_1px)] [background-size:16px_16px]" />
 
-          {/* Skanerlanayotgan mahsulot shtrix kodi */}
+          {/* Yuqori ilova logotipi */}
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+            <div className="h-6 w-20 relative">
+              <Image
+                src="/brand/logo-transparent.png"
+                alt="OPTOVIK.UZ"
+                fill
+                className="object-contain drop-shadow"
+                priority
+              />
+            </div>
+            <div className="text-[10px] font-semibold text-white/70 mt-1">
+              Shtrix kod qidirilmoqda...
+            </div>
+          </div>
           <div className="relative z-10 w-44 h-28 bg-white rounded-2xl p-3 shadow-2xl flex flex-col items-center justify-center border border-slate-100">
             <div className="text-[10px] font-bold text-slate-800 tracking-wider mb-1 flex items-center gap-1">
               <span>Musaffo Sut 3.2% 1L</span>
@@ -66,10 +81,6 @@ export function PhoneMockup() {
             <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-red-500 rounded-tr-lg shadow-[0_0_8px_rgba(220,38,38,0.5)]" />
             <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-red-500 rounded-bl-lg shadow-[0_0_8px_rgba(220,38,38,0.5)]" />
             <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-red-500 rounded-br-lg shadow-[0_0_8px_rgba(220,38,38,0.5)]" />
-          </div>
-
-          <div className="absolute top-10 text-[11px] font-semibold text-white/70">
-            Shtrix kod qidirilmoqda...
           </div>
         </div>
 
