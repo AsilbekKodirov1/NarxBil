@@ -4,8 +4,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ShoppingBag, Sparkles } from "lucide-react";
-import { BRAND_CONFIG } from "@/config/brand";
+import { Check, ShoppingBag } from "lucide-react";
 
 export function PhoneMockup() {
   const [step, setStep] = useState<"scanning" | "detected" | "added">("scanning");

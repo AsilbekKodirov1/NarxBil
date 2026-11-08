@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, FileSpreadsheet, Upload, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { X, FileSpreadsheet, Upload, CheckCircle2, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 
 interface CsvImportModalProps {

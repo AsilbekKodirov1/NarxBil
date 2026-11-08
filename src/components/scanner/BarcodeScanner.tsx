@@ -31,7 +31,7 @@ export function BarcodeScanner() {
   const [torchSupported, setTorchSupported] = useState(false);
 
   // Holatlar
-  const [isScanning, setIsScanning] = useState(false);
+  const [_isScanning, setIsScanning] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 

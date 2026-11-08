@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, X, Sparkles } from "lucide-react";
+import { Download, X } from "lucide-react";
 import { BRAND_CONFIG } from "@/config/brand";
 
 interface BeforeInstallPromptEvent extends Event {

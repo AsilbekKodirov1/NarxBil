@@ -1,7 +1,7 @@
 // src/components/ui/AnimatedCounter.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BRAND_CONFIG } from "@/config/brand";
 
 interface AnimatedCounterProps {
@@ -16,10 +16,11 @@ export function AnimatedCounter({
   duration = 600,
 }: AnimatedCounterProps) {
   const [displayValue, setDisplayValue] = useState(value);
+  const prevValueRef = useRef(value);
 
   useEffect(() => {
     let startTimestamp: number | null = null;
-    const startValue = displayValue;
+    const startValue = prevValueRef.current;
     const diff = value - startValue;
 
     if (diff === 0) return;
@@ -38,6 +39,7 @@ export function AnimatedCounter({
         window.requestAnimationFrame(step);
       } else {
         setDisplayValue(value);
+        prevValueRef.current = value;
       }
     };
 

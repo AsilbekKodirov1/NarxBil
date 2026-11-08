@@ -106,7 +106,7 @@ export async function POST(req: Request) {
     if (apiKey && apiKey.trim() !== "") {
       const itemsText = items.map((i: CartItemDto) => `${i.name} (${i.quantity} dona, ${i.price} so'm)`).join(", ");
       
-      let systemPrompt = "Siz O'zbekistondagi NarxBil supermarket ilovasining aqlli oshpaz va xarid yordamchisisiz. Javoblarni faqat o'zbek tilida, do'stona, aniq va chiroyli Markdown formatida bering.";
+      const systemPrompt = "Siz O'zbekistondagi OPTOVIK.UZ supermarket ilovasining aqlli oshpaz va xarid yordamchisisiz. Javoblarni faqat o'zbek tilida, do'stona, aniq va chiroyli Markdown formatida bering.";
       let userQuery = "";
 
       if (type === "recipe") {

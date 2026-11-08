@@ -13,8 +13,7 @@ import {
   FileSpreadsheet, 
   ArrowUpRight, 
   ShieldAlert,
-  Loader2,
-  Clock
+  Loader2
 } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { StatsCharts } from "@/components/admin/StatsCharts";

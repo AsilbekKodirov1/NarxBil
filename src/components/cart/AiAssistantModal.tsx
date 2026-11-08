@@ -5,15 +5,11 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Bot, 
-  Sparkles, 
   UtensilsCrossed, 
   PiggyBank, 
   Send, 
   X, 
-  Loader2, 
-  Check, 
-  ShoppingBag,
-  RefreshCw
+  Loader2 
 } from "lucide-react";
 import { CartItem } from "@/lib/cart";
 
@@ -81,6 +77,7 @@ export function AiAssistantModal({
     if (isOpen && !response && !isLoading) {
       fetchAdvice("recipe");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   return (

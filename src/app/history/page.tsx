@@ -1,11 +1,11 @@
 // src/app/history/page.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   History, 
   Trash2, 
@@ -14,9 +14,7 @@ import {
   LogIn, 
   Clock, 
   Check, 
-  Tag, 
-  Store,
-  ArrowRight
+  Tag
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
@@ -49,13 +47,13 @@ interface HistoryGroup {
 
 export default function HistoryPage() {
   const { status } = useSession();
-  const { success: toastSuccess, info: toastInfo, error: toastError } = useToast();
+  const { success: toastSuccess, error: toastError } = useToast();
 
   const [groups, setGroups] = useState<HistoryGroup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
 
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     try {
       const res = await fetch("/api/history");
       if (res.ok) {
@@ -67,7 +65,7 @@ export default function HistoryPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toastError]);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -75,7 +73,7 @@ export default function HistoryPage() {
     } else if (status === "unauthenticated") {
       setIsLoading(false);
     }
-  }, [status]);
+  }, [status, fetchHistory]);
 
   const handleClearHistory = async () => {
     if (!confirm("Skanerlash tarixini tozalashni tasdiqlaysizmi?")) return;
