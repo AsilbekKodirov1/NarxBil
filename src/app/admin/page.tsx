@@ -104,15 +104,15 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFF] flex">
+    <div className="min-h-screen bg-[#FAFAFF] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 flex transition-colors duration-200">
       {/* Chap menyu */}
       <AdminSidebar />
 
       {/* Asosiy qism */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between sticky top-0 z-30">
+        <header className="h-16 bg-white dark:bg-[#0B0F19] border-b border-slate-200/80 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 transition-colors">
           <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">
+            <h1 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
               Admin Boshqaruv Paneli
             </h1>
           </div>
@@ -140,59 +140,59 @@ export default function AdminDashboardPage() {
           {/* Metrik kartalar */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {/* Jami tovarlar */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                   Jami mahsulotlar
                 </p>
-                <p className="text-3xl font-extrabold text-slate-900 font-price mt-1">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white font-price mt-1">
                   {stats?.totalProducts ?? 0}
                 </p>
                 <Link
                   href="/admin/products"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 mt-2"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-red-600 dark:text-red-400 hover:text-red-700 mt-2"
                 >
                   <span>Boshqarish</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 flex items-center justify-center">
                 <Package className="w-6 h-6" />
               </div>
             </div>
 
             {/* Bugungi skanerlashlar */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                   Bugungi skanerlar
                 </p>
-                <p className="text-3xl font-extrabold text-slate-900 font-price mt-1">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white font-price mt-1">
                   {stats?.todayScans ?? 0}
                 </p>
-                <span className="inline-block text-[11px] font-semibold text-emerald-600 mt-2">
+                <span className="inline-block text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-2">
                   Bugun so&apos;ralgan narxlar
                 </span>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/40 text-pink-500 dark:text-pink-400 flex items-center justify-center">
                 <ScanLine className="w-6 h-6" />
               </div>
             </div>
 
             {/* Do'konlar */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                   Faol do&apos;konlar
                 </p>
-                <p className="text-3xl font-extrabold text-slate-900 font-price mt-1">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white font-price mt-1">
                   {stats?.totalStores ?? 1}
                 </p>
-                <span className="inline-block text-[11px] font-semibold text-slate-400 mt-2">
+                <span className="inline-block text-[11px] font-semibold text-slate-400 dark:text-slate-500 mt-2">
                   {BRAND_CONFIG.name} tarmog&apos;i
                 </span>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 dark:text-amber-400 flex items-center justify-center">
                 <Store className="w-6 h-6" />
               </div>
             </div>
@@ -207,35 +207,35 @@ export default function AdminDashboardPage() {
           )}
 
           {/* Eng ko'p skanerlangan mahsulotlar jadvali */}
-          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-extrabold text-base text-slate-900">
+              <h3 className="font-extrabold text-base text-slate-900 dark:text-white">
                 Eng ommabop mahsulotlar
               </h3>
               <Link
                 href="/admin/products"
-                className="text-xs font-bold text-red-600 hover:underline"
+                className="text-xs font-bold text-red-600 dark:text-red-400 hover:underline"
               >
                 Barchasini ko&apos;rish
               </Link>
             </div>
 
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {stats?.top5Products.map((p, idx) => (
                 <div key={p.id} className="py-3 flex items-center justify-between text-sm">
                   <div className="flex items-center gap-3">
-                    <span className="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
+                    <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs font-bold">
                       {idx + 1}
                     </span>
                     <div>
-                      <p className="font-bold text-slate-900">{p.name}</p>
-                      <p className="text-xs font-mono text-slate-400">Shtrix: {p.barcode}</p>
+                      <p className="font-bold text-slate-900 dark:text-white">{p.name}</p>
+                      <p className="text-xs font-mono text-slate-400 dark:text-slate-500">Shtrix: {p.barcode}</p>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <p className="font-price font-bold text-red-600">{p.priceFormatted}</p>
-                    <p className="text-xs font-semibold text-slate-400">
+                    <p className="font-price font-bold text-red-600 dark:text-red-400">{p.priceFormatted}</p>
+                    <p className="text-xs font-semibold text-slate-400 dark:text-slate-500">
                       {p.scanCount} marta skanerlangan
                     </p>
                   </div>

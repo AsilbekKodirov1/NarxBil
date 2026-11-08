@@ -113,15 +113,15 @@ export default function AdminProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFF] flex">
+    <div className="min-h-screen bg-[#FAFAFF] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 flex transition-colors duration-200">
       {/* Chap yon menyu */}
       <AdminSidebar />
 
       {/* Asosiy kontent */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between sticky top-0 z-30">
+        <header className="h-16 bg-white dark:bg-[#0B0F19] border-b border-slate-200/80 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 transition-colors">
           <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">
+            <h1 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
               Mahsulotlar katalogi ({total})
             </h1>
           </div>
@@ -150,7 +150,7 @@ export default function AdminProductsPage() {
 
         <main className="p-6 sm:p-8 space-y-6 max-w-6xl w-full">
           {/* Qidiruv va Filtr paneli */}
-          <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row gap-3 items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row gap-3 items-center justify-between">
             {/* Qidiruv maydoni */}
             <div className="relative w-full sm:w-80">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -162,13 +162,13 @@ export default function AdminProductsPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600"
+                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600"
               />
             </div>
 
             {/* Kategoriya filtri */}
             <div className="w-full sm:w-auto flex items-center gap-2">
-              <span className="text-xs text-slate-500 font-semibold whitespace-nowrap">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold whitespace-nowrap">
                 Kategoriya:
               </span>
               <select
@@ -177,7 +177,7 @@ export default function AdminProductsPage() {
                   setCategory(e.target.value);
                   setPage(1);
                 }}
-                className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 bg-white"
+                className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
               >
                 <option value="ALL">Barcha kategoriyalar</option>
                 {availableCategories.map((c) => (
@@ -190,11 +190,11 @@ export default function AdminProductsPage() {
           </div>
 
           {/* Mahsulotlar jadvali */}
-          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/75 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
+                  <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-800/40 text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">
                     <th className="py-3.5 px-4">Tovar</th>
                     <th className="py-3.5 px-4">Shtrix kod</th>
                     <th className="py-3.5 px-4">Narxi</th>
@@ -219,11 +219,11 @@ export default function AdminProductsPage() {
                     </tr>
                   ) : (
                     products.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-50/60 transition">
+                      <tr key={item.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition">
                         {/* Rasm va nom */}
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/60 flex-shrink-0">
+                            <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 flex-shrink-0">
                               {item.imageUrl ? (
                                 <Image
                                   src={item.imageUrl}
@@ -233,12 +233,12 @@ export default function AdminProductsPage() {
                                   sizes="48px"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-slate-300">
+                                <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
                                   <Tag className="w-4 h-4" />
                                 </div>
                               )}
                             </div>
-                            <div className="font-bold text-slate-900 max-w-xs truncate">
+                            <div className="font-bold text-slate-900 dark:text-white max-w-xs truncate">
                               {item.name}
                             </div>
                           </div>
@@ -246,18 +246,18 @@ export default function AdminProductsPage() {
 
                         {/* Shtrix kod */}
                         <td className="py-3 px-4">
-                          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                             {item.barcode}
                           </span>
                         </td>
 
                         {/* Narx */}
                         <td className="py-3 px-4">
-                          <div className="font-price font-bold text-slate-900">
+                          <div className="font-price font-bold text-slate-900 dark:text-white">
                             {BRAND_CONFIG.currency.format(item.discountPrice ?? item.price)}
                           </div>
                           {item.discountPrice && (
-                            <div className="text-[11px] text-slate-400 font-price line-through">
+                            <div className="text-[11px] text-slate-400 dark:text-slate-500 font-price line-through">
                               {BRAND_CONFIG.currency.format(item.price)}
                             </div>
                           )}
@@ -266,18 +266,18 @@ export default function AdminProductsPage() {
                         {/* Kategoriya */}
                         <td className="py-3 px-4">
                           {item.category ? (
-                            <span className="text-[11px] font-semibold text-red-700 bg-red-50 px-2 py-0.5 rounded-lg border border-red-200/50">
+                            <span className="text-[11px] font-semibold text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/40 px-2 py-0.5 rounded-lg border border-red-200/50 dark:border-red-900/60">
                               {item.category}
                             </span>
                           ) : (
-                            <span className="text-slate-300 text-xs">—</span>
+                            <span className="text-slate-300 dark:text-slate-600 text-xs">—</span>
                           )}
                         </td>
 
                         {/* Yangilanish vaqti */}
-                        <td className="py-3 px-4 text-xs text-slate-500">
+                        <td className="py-3 px-4 text-xs text-slate-500 dark:text-slate-400">
                           <div className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                             <span>
                               {new Date(item.updatedAt).toLocaleDateString("uz-UZ", {
                                 day: "numeric",
@@ -296,14 +296,14 @@ export default function AdminProductsPage() {
                                 setProductToEdit(item);
                                 setIsFormOpen(true);
                               }}
-                              className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition"
+                              className="p-2 rounded-xl text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition"
                               title="Tahrirlash"
                             >
                               <Edit3 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleDelete(item.id, item.name)}
-                              className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition"
+                              className="p-2 rounded-xl text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition"
                               title="O'chirish"
                             >
                               <Trash2 className="w-4 h-4" />

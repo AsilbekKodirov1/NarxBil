@@ -92,8 +92,8 @@ export default function RegisterPage() {
       >
         {/* Yuqori logotip */}
         <div className="flex flex-col items-center mb-8">
-          <Logo iconSize={36} textSize="text-2xl" isLink={true} />
-          <p className="text-slate-500 text-sm mt-2 text-center font-medium">
+          <Logo iconSize={42} textSize="text-2xl" isLink={true} variant="badge" />
+          <p className="text-slate-500 text-sm mt-3 text-center font-medium">
             {BRAND_CONFIG.tagline}
           </p>
         </div>

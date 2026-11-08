@@ -161,10 +161,10 @@ export default function CartPage() {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                      className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm hover:shadow-md transition flex items-center gap-4"
+                      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm hover:shadow-md transition flex items-center gap-4"
                     >
                       {/* Rasm */}
-                      <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
+                      <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0 border border-slate-100 dark:border-slate-800">
                         {item.imageUrl ? (
                           <Image
                             src={item.imageUrl}
@@ -174,7 +174,7 @@ export default function CartPage() {
                             sizes="80px"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-300">
+                          <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
                             <Tag className="w-6 h-6" />
                           </div>
                         )}
@@ -187,19 +187,19 @@ export default function CartPage() {
 
                       {/* Nomi va Narxi */}
                       <div className="flex-1 min-w-0">
-                        <div className="text-[11px] font-bold text-red-600 uppercase tracking-wider">
+                        <div className="text-[11px] font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">
                           {item.category || "Oziq-ovqat"}
                         </div>
-                        <h3 className="font-extrabold text-sm sm:text-base text-slate-900 truncate">
+                        <h3 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white truncate">
                           {item.name}
                         </h3>
 
                         <div className="flex items-baseline gap-2 mt-1">
-                          <span className="font-price font-bold text-slate-900 text-sm sm:text-base">
+                          <span className="font-price font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                             {BRAND_CONFIG.currency.format(effectivePrice)}
                           </span>
                           {item.discountPrice && (
-                            <span className="text-xs text-slate-400 font-price line-through">
+                            <span className="text-xs text-slate-400 dark:text-slate-500 font-price line-through">
                               {BRAND_CONFIG.currency.format(item.price)}
                             </span>
                           )}
@@ -208,20 +208,20 @@ export default function CartPage() {
 
                       {/* Miqdor va Jami narx */}
                       <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+                        <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
                           <button
                             onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                            className="w-7 h-7 rounded-lg bg-white text-slate-700 flex items-center justify-center hover:bg-slate-50 transition shadow-sm"
+                            className="w-7 h-7 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-600 transition shadow-sm"
                             aria-label="Kamaytirish"
                           >
                             <Minus className="w-3.5 h-3.5" />
                           </button>
-                          <span className="w-6 text-center text-xs font-bold font-price text-slate-900">
+                          <span className="w-6 text-center text-xs font-bold font-price text-slate-900 dark:text-white">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                            className="w-7 h-7 rounded-lg bg-white text-slate-700 flex items-center justify-center hover:bg-slate-50 transition shadow-sm"
+                            className="w-7 h-7 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-600 transition shadow-sm"
                             aria-label="Ko'paytirish"
                           >
                             <Plus className="w-3.5 h-3.5" />
@@ -263,12 +263,12 @@ export default function CartPage() {
           </div>
 
           {/* O'ng tomon: Jami hisob-kitob (Sticky Summary Card) */}
-            <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xl shadow-red-500/5 sticky top-24 space-y-4">
-              <div className="border-b border-slate-100 pb-4">
-                <h2 className="text-lg font-extrabold text-slate-900">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xl shadow-red-500/5 sticky top-24 space-y-4">
+              <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
+                <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">
                   Hisob-kitob xulosasi
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Kassaga bormasdan taxminiy hisob
                 </p>
               </div>

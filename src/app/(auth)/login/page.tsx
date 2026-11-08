@@ -84,8 +84,8 @@ function LoginForm() {
     <div className="w-full max-w-md relative z-10">
       {/* Yuqori logotip */}
       <div className="flex flex-col items-center mb-8">
-        <Logo iconSize={36} textSize="text-2xl" isLink={true} />
-        <p className="text-slate-500 text-sm mt-2 text-center font-medium">
+        <Logo iconSize={42} textSize="text-2xl" isLink={true} variant="badge" />
+        <p className="text-slate-500 text-sm mt-3 text-center font-medium">
           {BRAND_CONFIG.tagline}
         </p>
       </div>
@@ -160,7 +160,7 @@ function LoginForm() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@narxbil.uz"
+                placeholder="admin@optovik.uz"
                 required
                 className="w-full min-h-[46px] pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition"
               />
