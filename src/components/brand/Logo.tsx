@@ -92,12 +92,15 @@ export function Logo({
 
           {showText && (
             <div className="flex flex-col">
-              <div className="flex items-center tracking-tight leading-none">
+              <div className="flex items-center tracking-tight leading-none gap-1.5">
                 <span className={`${textSize} font-black text-blue-950 dark:text-white tracking-tighter`}>
                   OPTOVIK
                 </span>
                 <span className={`${textSize} font-black text-red-600 tracking-tighter`}>
                   .UZ
+                </span>
+                <span className="text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25">
+                  BETA
                 </span>
               </div>
               <span className="text-[9px] uppercase font-extrabold tracking-widest text-slate-400 dark:text-slate-500 mt-0.5">

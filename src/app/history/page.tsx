@@ -112,7 +112,7 @@ export default function HistoryPage() {
     <div className="min-h-screen bg-[#FAFAFF] flex flex-col">
       <Navbar />
 
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6 sm:py-10">
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6 pb-24 sm:py-10">
         {/* Sarlavha */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
           <div>
