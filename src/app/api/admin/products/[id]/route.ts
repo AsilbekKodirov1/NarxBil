@@ -4,14 +4,22 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-const updateSchema = z.object({
-  name: z.string().trim().min(2, "Mahsulot nomi kamida 2 ta belgidan iborat bo'lishi kerak"),
-  barcode: z.string().trim().min(4, "Shtrix kod kamida 4 ta raqam bo'lishi kerak"),
-  price: z.coerce.number().int().positive("Narx musbat son bo'lishi kerak"),
-  discountPrice: z.coerce.number().int().positive().nullable().optional(),
-  category: z.string().trim().nullable().optional(),
-  imageUrl: z.string().trim().nullable().optional(),
-});
+const updateSchema = z
+  .object({
+    name: z.string().trim().min(2, "Mahsulot nomi kamida 2 ta belgidan iborat bo'lishi kerak").max(255, "Mahsulot nomi juda uzun"),
+    barcode: z.string().trim().min(4, "Shtrix kod kamida 4 ta raqam bo'lishi kerak").max(64, "Shtrix kod juda uzun"),
+    price: z.coerce.number().int().positive("Narx musbat son bo'lishi kerak"),
+    discountPrice: z.coerce.number().int().positive("Chegirma narxi musbat son bo'lishi kerak").nullable().optional(),
+    category: z.string().trim().nullable().optional(),
+    imageUrl: z.string().trim().nullable().optional(),
+  })
+  .refine(
+    (data) => !data.discountPrice || data.discountPrice < data.price,
+    {
+      message: "Chegirma narxi asosiy narxdan arzon bo'lishi kerak",
+      path: ["discountPrice"],
+    }
+  );
 
 export async function PUT(
   req: Request,

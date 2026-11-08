@@ -4,13 +4,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  X, 
-  Upload, 
-  ScanBarcode, 
-  Check, 
-  Tag, 
-  Loader2 
+import {
+  X,
+  Upload,
+  ScanBarcode,
+  Check,
+  Tag,
+  Loader2
 } from "lucide-react";
 import { AdminBarcodeScannerModal } from "./AdminBarcodeScannerModal";
 import { useToast } from "@/components/ui/Toast";
@@ -97,13 +97,21 @@ function ProductFormModalInner({
       return;
     }
 
+    const numPrice = parseInt(price, 10);
+    const numDiscount = discountPrice ? parseInt(discountPrice, 10) : null;
+
+    if (numDiscount !== null && numDiscount >= numPrice) {
+      toastError("Chegirma narxi asosiy narxdan arzon bo'lishi kerak");
+      return;
+    }
+
     setIsSubmitting(true);
 
     const payload = {
       name: name.trim(),
       barcode: barcode.trim(),
-      price: parseInt(price, 10),
-      discountPrice: discountPrice ? parseInt(discountPrice, 10) : null,
+      price: numPrice,
+      discountPrice: numDiscount,
       category: category.trim() || null,
       imageUrl: imageUrl.trim() || null,
     };
@@ -216,7 +224,6 @@ function ProductFormModalInner({
               </div>
             </div>
           </div>
-
           {/* 2. Mahsulot nomi */}
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
