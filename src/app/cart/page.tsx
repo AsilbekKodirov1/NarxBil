@@ -15,7 +15,11 @@ import {
   Sparkles, 
   AlertCircle,
   Tag,
-  Bot
+  Bot,
+  CheckCircle,
+  X,
+  Receipt,
+  QrCode
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
@@ -38,6 +42,22 @@ export default function CartPage() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [orderCode, setOrderCode] = useState<string>("");
+
+  const handleStartOrder = () => {
+    if (items.length === 0) return;
+    const randomCode = `OPT-${Math.floor(100000 + Math.random() * 900000)}`;
+    setOrderCode(randomCode);
+    setIsOrderModalOpen(true);
+  };
+
+  const handleConfirmOrder = () => {
+    toastSuccess(`Buyurtma qabul qilindi! Kassa kodi: ${orderCode}`);
+    clearCart();
+    setItems([]);
+    setIsOrderModalOpen(false);
+  };
 
   const loadCart = () => {
     setItems(getCartFromStorage());
@@ -307,11 +327,21 @@ export default function CartPage() {
               </div>
 
               <div className="pt-1 space-y-2.5">
+                {/* Buyurtma berish tugmasi */}
+                <button
+                  type="button"
+                  onClick={handleStartOrder}
+                  className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-extrabold text-sm shadow-xl shadow-red-500/25 hover:shadow-2xl hover:shadow-red-500/35 active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <CheckCircle className="w-5 h-5 text-white" />
+                  <span>Buyurtma berish (Kassaga yo&apos;naltirish)</span>
+                </button>
+
                 {/* AI Maslahatchi tugmasi */}
                 <button
                   type="button"
                   onClick={() => setIsAiModalOpen(true)}
-                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-50 via-rose-50 to-blue-50 dark:from-red-950/40 dark:via-rose-950/30 dark:to-blue-950/40 border border-red-200/80 dark:border-red-900/60 text-slate-900 dark:text-white font-bold text-xs flex items-center justify-center gap-2 hover:opacity-95 transition shadow-sm active:scale-95"
+                  className="w-full py-3 px-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm active:scale-95 cursor-pointer"
                 >
                   <Bot className="w-4 h-4 text-red-600" />
                   <span>AI Maslahatchi (Retsept & Tahlil)</span>
@@ -320,7 +350,7 @@ export default function CartPage() {
 
                 <Link
                   href="/scan"
-                  className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2"
+                  className="w-full py-3 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs transition flex items-center justify-center gap-2 text-center"
                 >
                   <ScanBarcode className="w-4 h-4" />
                   <span>Skanerlashda davom etish</span>
@@ -337,6 +367,93 @@ export default function CartPage() {
           items={items}
           budget={totalSum}
         />
+
+        {/* Buyurtma / Kassa Modali */}
+        <AnimatePresence>
+          {isOrderModalOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsOrderModalOpen(false)}
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="fixed inset-x-4 top-[10%] sm:top-[15%] max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-2xl z-50 p-6 border border-slate-100 dark:border-slate-800 overflow-hidden"
+              >
+                <div className="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <div className="flex items-center gap-2 text-slate-900 dark:text-white font-extrabold text-lg">
+                    <Receipt className="w-5 h-5 text-red-600" />
+                    <span>Buyurtma Xulosasi</span>
+                  </div>
+                  <button
+                    onClick={() => setIsOrderModalOpen(false)}
+                    className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Kassa shtrix / QR kodi */}
+                <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 text-center border border-slate-200/60 dark:border-slate-700 mb-5">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    Kassa To&apos;lov Kodi
+                  </p>
+                  <p className="font-mono text-2xl font-black text-red-600 dark:text-red-400 tracking-widest">
+                    {orderCode}
+                  </p>
+                  <div className="flex items-center justify-center gap-2 mt-2 text-xs text-slate-500">
+                    <QrCode className="w-4 h-4 text-slate-400" />
+                    <span>Ushbu kodni kassirga ko&apos;rsatib to&apos;lang</span>
+                  </div>
+                </div>
+
+                {/* Xulosa ma'lumotlari */}
+                <div className="space-y-2 text-sm mb-6">
+                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                    <span>Mahsulotlar soni:</span>
+                    <span className="font-bold text-slate-900 dark:text-white font-price">{totalItems} ta</span>
+                  </div>
+                  {totalSavings > 0 && (
+                    <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-semibold">
+                      <span>Jami tejov:</span>
+                      <span className="font-bold font-price">-{BRAND_CONFIG.currency.format(totalSavings)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-base font-extrabold text-slate-900 dark:text-white pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <span>To&apos;lanadigan summa:</span>
+                    <span className="text-red-600 dark:text-red-400 font-price font-extrabold">
+                      {BRAND_CONFIG.currency.format(totalSum)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2.5">
+                  <button
+                    type="button"
+                    onClick={handleConfirmOrder}
+                    className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/35 active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <CheckCircle className="w-4 h-4" />
+                    <span>Buyurtmani tasdiqlash</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsOrderModalOpen(false)}
+                    className="w-full py-2.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition"
+                  >
+                    Savatga qaytish
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </main>
       <BottomNav />
     </div>

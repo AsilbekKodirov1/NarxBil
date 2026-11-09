@@ -20,11 +20,14 @@ export async function GET(
       );
     }
 
-    // Bazadan mahsulotni qidirish
+    // Bazadan mahsulotni shtrix kod yoki nomi bo'yicha qidirish
     const product = await prisma.product.findFirst({
       where: {
-        barcode: barcode,
         isActive: true,
+        OR: [
+          { barcode: barcode },
+          { name: { contains: barcode, mode: "insensitive" } },
+        ],
       },
       include: {
         store: {
