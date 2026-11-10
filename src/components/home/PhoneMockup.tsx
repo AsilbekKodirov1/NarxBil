@@ -5,6 +5,8 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { ScanBarcode, Store, Percent, CheckCircle2, ShieldCheck, Tag } from "lucide-react";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { Language } from "@/lib/i18n";
 
 interface DemoProduct {
   name: string;
@@ -17,44 +19,145 @@ interface DemoProduct {
   savings: string;
 }
 
-const DEMO_PRODUCTS: DemoProduct[] = [
-  {
-    name: "Musaffo Sut 3.2% 1L",
-    category: "Sut mahsulotlari",
-    barcode: "4780000150123",
-    price: "11 900 so'm",
-    originalPrice: "13 500 so'm",
-    discountBadge: "-12% TEJOV",
-    shortName: "Sut 1L",
-    savings: "1 600 so'm tejaldi",
+const DEMO_PRODUCTS: Record<Language, DemoProduct[]> = {
+  uz: [
+    {
+      name: "Musaffo Sut 3.2% 1L",
+      category: "Sut mahsulotlari",
+      barcode: "4780000150123",
+      price: "11 900 so'm",
+      originalPrice: "13 500 so'm",
+      discountBadge: "-12% TEJOV",
+      shortName: "Sut 1L",
+      savings: "1 600 so'm tejaldi",
+    },
+    {
+      name: "Coca-Cola Classic 1.5L",
+      category: "Ichimliklar",
+      barcode: "5449000000996",
+      price: "14 500 so'm",
+      originalPrice: "16 000 so'm",
+      discountBadge: "-9% AKSIYA",
+      shortName: "Coca-Cola",
+      savings: "1 500 so'm tejaldi",
+    },
+    {
+      name: "KitKat Shokolad 40g",
+      category: "Shirinliklar",
+      barcode: "7613035368545",
+      price: "8 200 so'm",
+      shortName: "KitKat",
+      savings: "Standart narx",
+    },
+  ],
+  ru: [
+    {
+      name: "Молоко Musaffo 3.2% 1Л",
+      category: "Молочные продукты",
+      barcode: "4780000150123",
+      price: "11 900 сум",
+      originalPrice: "13 500 сум",
+      discountBadge: "-12% СКИДКА",
+      shortName: "Молоко 1Л",
+      savings: "1 600 сум экономия",
+    },
+    {
+      name: "Coca-Cola Classic 1.5Л",
+      category: "Напитки",
+      barcode: "5449000000996",
+      price: "14 500 сум",
+      originalPrice: "16 000 сум",
+      discountBadge: "-9% АКЦИЯ",
+      shortName: "Coca-Cola",
+      savings: "1 500 сум экономия",
+    },
+    {
+      name: "Шоколад KitKat 40г",
+      category: "Сладости",
+      barcode: "7613035368545",
+      price: "8 200 сум",
+      shortName: "KitKat",
+      savings: "Стандартная цена",
+    },
+  ],
+  en: [
+    {
+      name: "Musaffo Milk 3.2% 1L",
+      category: "Dairy products",
+      barcode: "4780000150123",
+      price: "11 900 UZS",
+      originalPrice: "13 500 UZS",
+      discountBadge: "-12% OFF",
+      shortName: "Milk 1L",
+      savings: "1,600 UZS saved",
+    },
+    {
+      name: "Coca-Cola Classic 1.5L",
+      category: "Beverages",
+      barcode: "5449000000996",
+      price: "14 500 UZS",
+      originalPrice: "16 000 UZS",
+      discountBadge: "-9% SALE",
+      shortName: "Coca-Cola",
+      savings: "1,500 UZS saved",
+    },
+    {
+      name: "KitKat Chocolate 40g",
+      category: "Sweets & Snacks",
+      barcode: "7613035368545",
+      price: "8 200 UZS",
+      shortName: "KitKat",
+      savings: "Standard price",
+    },
+  ],
+};
+
+const MOCKUP_TEXTS = {
+  uz: {
+    superSavings: "#SUPER-TEJOV",
+    salePrice: "Aksiya Narxi",
+    cashierCode: "KASSA TO'LOV KODI",
+    readyForCashier: "Kassirga Tayyor",
+    oneSecond: "1 soniya",
+    storePrice: "Do'kondagi narx:",
+    centralSupermarket: "Markaziy Supermarket",
+    verifiedPrice: "Aniq narx",
+    scanningBarcode: "Shtrix kod skanerlanmoqda...",
   },
-  {
-    name: "Coca-Cola Classic 1.5L",
-    category: "Ichimliklar",
-    barcode: "5449000000996",
-    price: "14 500 so'm",
-    originalPrice: "16 000 so'm",
-    discountBadge: "-9% AKSIYA",
-    shortName: "Coca-Cola",
-    savings: "1 500 so'm tejaldi",
+  ru: {
+    superSavings: "#СУПЕР-ЭКОНОМИЯ",
+    salePrice: "Цена по акции",
+    cashierCode: "КОД ОПЛАТЫ НА КАССЕ",
+    readyForCashier: "Готово для кассира",
+    oneSecond: "1 секунда",
+    storePrice: "Цена в магазине:",
+    centralSupermarket: "Центральный супермаркет",
+    verifiedPrice: "Точная цена",
+    scanningBarcode: "Сканирование штрих-кода...",
   },
-  {
-    name: "KitKat Shokolad 40g",
-    category: "Shirinliklar",
-    barcode: "7613035368545",
-    price: "8 200 so'm",
-    shortName: "KitKat",
-    savings: "Standart narx",
+  en: {
+    superSavings: "#SUPER-SAVINGS",
+    salePrice: "Sale Price",
+    cashierCode: "CASHIER PAYMENT CODE",
+    readyForCashier: "Ready for Cashier",
+    oneSecond: "1 sec",
+    storePrice: "Store price:",
+    centralSupermarket: "Central Supermarket",
+    verifiedPrice: "Verified price",
+    scanningBarcode: "Scanning barcode...",
   },
-];
+};
 
 export function PhoneMockup() {
+  const { lang } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [scanStep, setScanStep] = useState<"scanning" | "detected">("scanning");
 
-  const activeProduct = DEMO_PRODUCTS[activeIdx];
+  const products = DEMO_PRODUCTS[lang] || DEMO_PRODUCTS.uz;
+  const activeProduct = products[activeIdx] || products[0];
+  const texts = MOCKUP_TEXTS[lang] || MOCKUP_TEXTS.uz;
 
   // 3D Tilt Spring Physics (Ultra-smooth interpolation)
   const mouseX = useMotionValue(0.5);
@@ -86,14 +189,14 @@ export function PhoneMockup() {
 
     const timer2 = setTimeout(() => {
       setScanStep("scanning");
-      setActiveIdx((prev) => (prev + 1) % DEMO_PRODUCTS.length);
+      setActiveIdx((prev) => (prev + 1) % products.length);
     }, 5000);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [activeIdx]);
+  }, [activeIdx, products.length]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -155,12 +258,12 @@ export function PhoneMockup() {
       >
         <div className="flex items-center justify-between mb-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 shadow-inner" />
-          <span className="text-[9px] font-mono font-bold text-slate-400">#SUPER-TEJOV</span>
+          <span className="text-[9px] font-mono font-bold text-slate-400">{texts.superSavings}</span>
         </div>
 
         <div className="flex items-center gap-1 text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-0.5">
           <Tag className="w-3 h-3" />
-          <span>Aksiya Narxi</span>
+          <span>{texts.salePrice}</span>
         </div>
 
         <div className="font-price font-extrabold text-lg text-slate-900 dark:text-white leading-tight">
@@ -193,7 +296,7 @@ export function PhoneMockup() {
       >
         <div className="flex items-center justify-between mb-1">
           <span className="text-[8.5px] uppercase font-black tracking-widest text-red-200">
-            KASSA TO&apos;LOV KODI
+            {texts.cashierCode}
           </span>
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
         </div>
@@ -205,9 +308,9 @@ export function PhoneMockup() {
         <div className="flex items-center justify-between pt-2 mt-1 border-t border-white/20 text-[9px] font-bold text-red-100">
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3 h-3 text-emerald-300" />
-            <span>Kassirga Tayyor</span>
+            <span>{texts.readyForCashier}</span>
           </span>
-          <span className="text-white font-black">1 soniya</span>
+          <span className="text-white font-black">{texts.oneSecond}</span>
         </div>
       </motion.div>
 
@@ -337,7 +440,7 @@ export function PhoneMockup() {
               onMouseLeave={() => setHoveredIdx(null)}
               className="relative flex items-center p-1 bg-slate-900/90 backdrop-blur-md rounded-xl border border-slate-800/90 gap-1 z-20 mb-1"
             >
-              {DEMO_PRODUCTS.map((prod, idx) => {
+              {products.map((prod, idx) => {
                 const isSelected = activeIdx === idx;
                 const isHovered = hoveredIdx === idx;
                 return (
@@ -394,7 +497,7 @@ export function PhoneMockup() {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                        Do&apos;kondagi narx:
+                        {texts.storePrice}
                       </div>
                       <div className="flex items-baseline gap-2">
                         <span className="font-price font-extrabold text-xl text-red-600 leading-none">
@@ -419,11 +522,11 @@ export function PhoneMockup() {
                   <div className="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] font-semibold text-slate-500">
                     <span className="flex items-center gap-1 text-slate-700">
                       <Store className="w-3 h-3 text-red-600" />
-                      <span>Markaziy Supermarket</span>
+                      <span>{texts.centralSupermarket}</span>
                     </span>
                     <span className="text-emerald-600 font-bold flex items-center gap-0.5">
                       <CheckCircle2 className="w-3 h-3" />
-                      Aniq narx
+                      {texts.verifiedPrice}
                     </span>
                   </div>
                 </motion.div>
@@ -438,7 +541,7 @@ export function PhoneMockup() {
                 >
                   <ScanBarcode className="w-4 h-4 text-red-500 animate-pulse" />
                   <span className="text-xs font-bold text-slate-300">
-                    Shtrix kod skanerlanmoqda...
+                    {texts.scanningBarcode}
                   </span>
                 </motion.div>
               )}
