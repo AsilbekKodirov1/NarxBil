@@ -11,6 +11,7 @@ import {
   LogOut, 
   ShieldCheck, 
   ScanBarcode, 
+  Receipt,
   Home, 
   ExternalLink 
 } from "lucide-react";
@@ -33,6 +34,12 @@ export function AdminSidebar() {
       href: "/admin/products",
       icon: Package,
       active: pathname.startsWith("/admin/products"),
+    },
+    {
+      title: "Tezkor Kassa (POS)",
+      href: "/admin/cashier",
+      icon: Receipt,
+      active: pathname.startsWith("/admin/cashier"),
     },
   ];
 

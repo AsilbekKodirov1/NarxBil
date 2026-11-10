@@ -17,12 +17,15 @@ import {
   CheckCircle,
   X,
   Receipt,
-  QrCode
+  QrCode,
+  ShieldCheck
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { BudgetController } from "@/components/cart/BudgetController";
+import { BarcodeSvg } from "@/components/common/BarcodeSvg";
+import { QrCodeSvg } from "@/components/common/QrCodeSvg";
 import { BRAND_CONFIG } from "@/config/brand";
 import { 
   CartItem, 
@@ -40,16 +43,42 @@ export default function CartPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [orderCode, setOrderCode] = useState<string>("");
+  const [codeType, setCodeType] = useState<"BARCODE" | "QR">("BARCODE");
 
-  const handleStartOrder = () => {
+  const handleStartOrder = async () => {
     if (items.length === 0) return;
+    const { totalItems: count, totalSum: sum, totalSavings: savings } = calculateCartTotal(items);
     const randomCode = `OPT-${Math.floor(100000 + Math.random() * 900000)}`;
     setOrderCode(randomCode);
     setIsOrderModalOpen(true);
+
+    try {
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderCode: randomCode,
+          items: items.map((i) => ({
+            id: i.id,
+            name: i.name,
+            barcode: i.barcode,
+            price: i.price,
+            discountPrice: i.discountPrice,
+            quantity: i.quantity,
+            category: i.category,
+          })),
+          totalSum: sum,
+          totalSavings: savings,
+          totalItems: count,
+        }),
+      });
+    } catch (err) {
+      console.warn("Order sync:", err);
+    }
   };
 
   const handleConfirmOrder = () => {
-    toastSuccess(`Buyurtma qabul qilindi! Kassa kodi: ${orderCode}`);
+    toastSuccess(`Kassa kodi tasdiqlandi: ${orderCode}. Kassirga ko'rsating!`);
     clearCart();
     setItems([]);
     setIsOrderModalOpen(false);
@@ -376,17 +405,46 @@ export default function CartPage() {
                   </button>
                 </div>
 
-                {/* Kassa shtrix / QR kodi */}
-                <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 text-center border border-slate-200/60 dark:border-slate-700 mb-5">
-                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Kassa To&apos;lov Kodi
-                  </p>
-                  <p className="font-mono text-2xl font-black text-red-600 dark:text-red-400 tracking-widest">
-                    {orderCode}
-                  </p>
-                  <div className="flex items-center justify-center gap-2 mt-2 text-xs text-slate-500">
-                    <QrCode className="w-4 h-4 text-slate-400" />
-                    <span>Ushbu kodni kassirga ko&apos;rsatib to&apos;lang</span>
+                {/* Kassa shtrix / QR kodi tanlagichi va haqiqiy Barcode / QR renderer */}
+                <div className="bg-slate-50 dark:bg-slate-800/60 rounded-3xl p-4 sm:p-5 text-center border-2 border-red-500/20 mb-5">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <button
+                      type="button"
+                      onClick={() => setCodeType("BARCODE")}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                        codeType === "BARCODE"
+                          ? "bg-red-600 text-white shadow-md shadow-red-500/30"
+                          : "bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
+                      }`}
+                    >
+                      <ScanBarcode className="w-3.5 h-3.5" />
+                      <span>Shtrix-kod (Laser skaner)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCodeType("QR")}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                        codeType === "QR"
+                          ? "bg-red-600 text-white shadow-md shadow-red-500/30"
+                          : "bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
+                      }`}
+                    >
+                      <QrCode className="w-3.5 h-3.5" />
+                      <span>QR-kod</span>
+                    </button>
+                  </div>
+
+                  <div className="flex justify-center my-3">
+                    {codeType === "BARCODE" ? (
+                      <BarcodeSvg value={orderCode} width={300} height={85} className="w-full max-w-[320px]" />
+                    ) : (
+                      <QrCodeSvg value={orderCode} size={160} />
+                    )}
+                  </div>
+
+                  <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 font-semibold max-w-xs mx-auto leading-relaxed flex items-center justify-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>Kassir apparati bilan telefoningizdagi ushbu kodni 1 marta skaner qilganda butun savatingiz ochiladi.</span>
                   </div>
                 </div>
 
