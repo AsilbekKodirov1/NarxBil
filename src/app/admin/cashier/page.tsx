@@ -26,10 +26,12 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminBarcodeScannerModal } from "@/components/admin/AdminBarcodeScannerModal";
 import { BRAND_CONFIG } from "@/config/brand";
 import { OrderRecord } from "@/lib/ordersStore";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export default function AdminCashierPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { t } = useLanguage();
 
   const [scanInput, setScanInput] = useState("");
   const [isCameraOpen, setIsCameraOpen] = useState(false);
@@ -234,10 +236,10 @@ export default function AdminCashierPage() {
               </span>
               <div>
                 <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                  Tezkor Kassa Termina (Scan & Go)
+                  {t.cashier.title}
                 </h1>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  Mijoz telefoni ekranidagi bitta shtrix-kodni skanerlab butun savatni ochish
+                  {t.cashier.subtitle}
                 </p>
               </div>
             </div>
@@ -246,7 +248,7 @@ export default function AdminCashierPage() {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span>Kassa skaneri tayyor</span>
+              <span>{t.cashier.scannerReady}</span>
             </div>
             <button
               onClick={fetchRecentOrders}
@@ -269,7 +271,7 @@ export default function AdminCashierPage() {
                   type="text"
                   value={scanInput}
                   onChange={(e) => setScanInput(e.target.value)}
-                  placeholder="Kassa shtrix-kodini skanerlang yoki yozing (masalan: OPT-748291)..."
+                  placeholder={t.cashier.placeholder}
                   className="w-full pl-13 pr-4 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border-2 border-slate-300 dark:border-slate-700 focus:border-red-600 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-lg outline-none transition placeholder:text-slate-400"
                   autoFocus
                 />
@@ -282,7 +284,7 @@ export default function AdminCashierPage() {
                   className="flex-1 sm:flex-initial px-5 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 hover:from-red-700 hover:to-blue-950 text-white font-bold text-sm shadow-lg shadow-red-500/25 transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                 >
                   <Camera className="w-5 h-5 text-white animate-pulse" />
-                  <span>Kamera bilan skanerlash</span>
+                  <span>{t.cashier.cameraScanBtn}</span>
                 </button>
 
                 <button
@@ -295,7 +297,7 @@ export default function AdminCashierPage() {
                   ) : (
                     <>
                       <Search className="w-4 h-4" />
-                      <span>Ochish</span>
+                      <span>{t.cashier.openCart}</span>
                     </>
                   )}
                 </button>
@@ -305,7 +307,7 @@ export default function AdminCashierPage() {
             <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>Kassa apparatingiz bo&apos;lmasa, <b>&quot;Kamera bilan skanerlash&quot;</b> tugmasi orqali telefoningizda mijoz kodini o&apos;qita olasiz.</span>
+                <span>Kassa apparatingiz bo&apos;lmasa, <b>&quot;{t.cashier.cameraScanBtn}&quot;</b> tugmasi orqali telefoningizda mijoz kodini o&apos;qita olasiz.</span>
               </span>
 
               <button
@@ -314,7 +316,7 @@ export default function AdminCashierPage() {
                 className="text-red-600 dark:text-red-400 hover:underline font-bold flex items-center gap-1 cursor-pointer bg-red-50 dark:bg-red-950/40 px-3 py-1.5 rounded-xl border border-red-200/50 dark:border-red-900"
               >
                 <Sparkles className="w-3.5 h-3.5 text-red-500" />
-                <span>Sinov uchun demo buyurtma ochish</span>
+                <span>{t.cashier.demoOrderBtn}</span>
               </button>
             </div>
           </div>
@@ -366,7 +368,7 @@ export default function AdminCashierPage() {
                   className="px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <ArrowRight className="w-4 h-4" />
-                  <span>Keyingi mijoz</span>
+                  <span>{t.cashier.nextCustomer}</span>
                 </button>
               )}
             </div>
@@ -374,18 +376,18 @@ export default function AdminCashierPage() {
             {/* Mahsulotlar Jadvali */}
             <div className="p-5 sm:p-6">
               <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">
-                Savatdagi mahsulotlar (Bitta-bittalab urish shart emas!)
+                {t.cashier.productsList}
               </h3>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 text-xs uppercase font-bold">
-                      <th className="pb-3">Mahsulot</th>
-                      <th className="pb-3">Shtrix-kod</th>
-                      <th className="pb-3 text-center">Soni</th>
-                      <th className="pb-3 text-right">Narxi</th>
-                      <th className="pb-3 text-right">Jami</th>
+                      <th className="pb-3">{t.cashier.productCol}</th>
+                      <th className="pb-3">{t.cashier.barcodeCol}</th>
+                      <th className="pb-3 text-center">{t.cashier.quantityCol}</th>
+                      <th className="pb-3 text-right">{t.cashier.priceCol}</th>
+                      <th className="pb-3 text-right">{t.cashier.totalCol}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -400,7 +402,7 @@ export default function AdminCashierPage() {
                             {item.barcode}
                           </td>
                           <td className="py-3 text-center font-bold text-slate-800 dark:text-slate-200">
-                            {item.quantity} dona
+                            {item.quantity}
                           </td>
                           <td className="py-3 text-right font-price text-slate-600 dark:text-slate-400">
                             {BRAND_CONFIG.currency.format(activePrice)}
@@ -420,11 +422,11 @@ export default function AdminCashierPage() {
                 <div>
                   {currentOrder.totalSavings > 0 && (
                     <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">
-                      Aksiya tejalishi: -{BRAND_CONFIG.currency.format(currentOrder.totalSavings)}
+                      {t.cart.savings} -{BRAND_CONFIG.currency.format(currentOrder.totalSavings)}
                     </div>
                   )}
                   <div className="text-slate-500 text-xs font-bold uppercase tracking-wider">
-                    Jami To&apos;lanadigan Summa:
+                    {t.cashier.totalAmount}
                   </div>
                   <div className="text-3xl sm:text-4xl font-price font-black text-red-600 dark:text-red-400">
                     {BRAND_CONFIG.currency.format(currentOrder.totalSum)}
@@ -440,7 +442,7 @@ export default function AdminCashierPage() {
                       className="flex-1 md:flex-initial px-6 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                     >
                       <Banknote className="w-5 h-5" />
-                      <span>Naqd Pul Qabul Qilindi</span>
+                      <span>{t.cashier.payCash}</span>
                     </button>
 
                     <button
@@ -450,7 +452,7 @@ export default function AdminCashierPage() {
                       className="flex-1 md:flex-initial px-6 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm shadow-lg shadow-blue-600/25 transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                     >
                       <CreditCard className="w-5 h-5" />
-                      <span>Plastik Karta (Humo/Uzcard)</span>
+                      <span>{t.cashier.payCard}</span>
                     </button>
                   </div>
                 ) : (
@@ -460,14 +462,14 @@ export default function AdminCashierPage() {
                       className="px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 font-bold text-xs transition flex items-center gap-2 cursor-pointer"
                     >
                       <Printer className="w-4 h-4" />
-                      <span>Chekni chop etish</span>
+                      <span>{t.cashier.printReceipt}</span>
                     </button>
                     <button
                       onClick={handleResetForNextCustomer}
                       className="px-6 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-sm shadow-lg shadow-red-500/30 transition flex items-center gap-2 cursor-pointer"
                     >
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>Keyingi xaridorni kutish</span>
+                      <span>{t.cashier.nextCustomer}</span>
                     </button>
                   </div>
                 )}

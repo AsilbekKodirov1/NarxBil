@@ -18,10 +18,13 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const { t } = useLanguage();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -53,7 +56,7 @@ export function Navbar() {
             }`}
           >
             <ScanBarcode className="w-4 h-4 text-red-500" />
-            <span>Skaner</span>
+            <span>{t.nav.scanner}</span>
           </Link>
           <Link
             href="/cart"
@@ -66,7 +69,7 @@ export function Navbar() {
             }`}
           >
             <ShoppingBag className="w-4 h-4 text-red-500" />
-            <span>Savat</span>
+            <span>{t.nav.cart}</span>
           </Link>
           <Link
             href="/history"
@@ -79,7 +82,7 @@ export function Navbar() {
             }`}
           >
             <History className="w-4 h-4 text-blue-700 dark:text-blue-400" />
-            <span>Tarix</span>
+            <span>{t.nav.history}</span>
           </Link>
           {isAdmin && (
             <Link
@@ -87,13 +90,14 @@ export function Navbar() {
               className="flex items-center gap-1.5 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/60 px-3 py-1.5 rounded-xl border border-red-200/60 dark:border-red-800 text-xs font-bold hover:bg-red-100 dark:hover:bg-red-900/60 transition"
             >
               <ShieldCheck className="w-4 h-4 text-red-600 dark:text-red-400" />
-              <span>Boshqaruv</span>
+              <span>{t.nav.admin}</span>
             </Link>
           )}
         </nav>
 
-        {/* O'ng tomon: Profil, Qorong'i rejim va Kirish */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        {/* O'ng tomon: Til tanlash, Qorong'i rejim, Profil va Kirish */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <LanguageSwitcher />
           <ThemeToggle />
 
           {status === "loading" ? (
@@ -165,7 +169,7 @@ export function Navbar() {
                         className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition"
                       >
                         <LogOut className="w-4 h-4" />
-                        <span>Chiqish</span>
+                        <span>{t.nav.logout}</span>
                       </button>
                     </div>
                   </motion.div>
@@ -180,7 +184,7 @@ export function Navbar() {
                   className="inline-flex items-center gap-1.5 text-sm font-bold text-white bg-gradient-to-r from-red-600 to-blue-900 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow-md shadow-red-500/20 hover:opacity-95 transition"
                 >
                   <LogIn className="w-4 h-4" />
-                  <span>Kirish</span>
+                  <span>{t.nav.login}</span>
                 </Link>
               </motion.div>
               <Link

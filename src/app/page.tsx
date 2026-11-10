@@ -23,29 +23,32 @@ import { PwaManager } from "@/components/pwa/PwaManager";
 import { PhoneMockup } from "@/components/home/PhoneMockup";
 import { Logo } from "@/components/brand/Logo";
 import { BRAND_CONFIG } from "@/config/brand";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   const steps = [
     {
       num: "01",
-      title: "Shtrix kodni skanerlang",
-      desc: "Kamerangizni tovar qadog'idagi shtrix kodga to'g'rilang yoki shtrix kod raqamlarini qo'lda yozing. Ilova o'rnatish shart emas.",
+      title: t.steps.step1Title,
+      desc: t.steps.step1Desc,
       icon: ScanBarcode,
       accent: "bg-red-600 text-white",
       tag: "1 soniyada",
     },
     {
       num: "02",
-      title: "Haqiqiy narxni ko'ring",
-      desc: "Supermarket kassa bazasidagi eng so'nggi narx, aksiya va chegirmalar foizi bilan darhol ko'rinadi.",
+      title: t.steps.step2Title,
+      desc: t.steps.step2Desc,
       icon: Tag,
       accent: "bg-blue-950 text-white dark:bg-slate-800",
       tag: "Aniq va shaffof",
     },
     {
       num: "03",
-      title: "Savat va Kassa Cheki",
-      desc: "Xaridlaringizni qo'shib boring, jami hisobni kuzating va kassada to'lash uchun bitta tayyor kassa kodini oling.",
+      title: t.steps.step3Title,
+      desc: t.steps.step3Desc,
       icon: Receipt,
       accent: "bg-red-700 text-white",
       tag: "Navbatsiz",
@@ -100,20 +103,20 @@ export default function HomePage() {
             {/* Real Retail Status Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-sm">
               <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
-              <span className="tracking-wide">OPTOVIK.UZ • Jonli Supermarket Tizimi</span>
+              <span className="tracking-wide">{t.hero.statusBadge}</span>
             </div>
 
             {/* Asosiy Sarlavha (High Contrast, Bold, Editorial) */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-950 dark:text-white tracking-tight leading-[1.12]">
-              Kassaga bormasdan <br className="hidden sm:inline" />
+              {t.hero.title1} <br className="hidden sm:inline" />
               <span className="text-red-600 dark:text-red-500 underline decoration-red-500/30 decoration-wavy decoration-2">
-                narxni aniq biling
+                {t.hero.titleHighlight}
               </span>
             </h1>
 
             {/* Tavsif matni */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
-              Telefoningiz kamerasini tovar shtrix kodiga qarating. Do&apos;kondagi haqiqiy narx, chegirmalar va tovar ma&apos;lumotlari 1 soniyada ekranda paydo bo&apos;ladi.
+              {t.hero.subtitle}
             </p>
 
             {/* 3D Taktil Harakat Tugmalari */}
@@ -123,7 +126,7 @@ export default function HomePage() {
                 className="w-full sm:w-auto min-h-[54px] px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-base shadow-[0_6px_0_#991B1B] hover:shadow-[0_4px_0_#991B1B] active:shadow-none hover:translate-y-0.5 active:translate-y-1.5 transition-all flex items-center justify-center gap-3 cursor-pointer group"
               >
                 <ScanBarcode className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                <span>Kamerani yoqish & Skanerlash</span>
+                <span>{t.hero.scanBtn}</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
 
@@ -132,7 +135,7 @@ export default function HomePage() {
                 className="w-full sm:w-auto min-h-[54px] px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm shadow-[0_4px_0_#CBD5E1] dark:shadow-[0_4px_0_#1E293B] hover:translate-y-0.5 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-4 h-4 text-red-600" />
-                <span>Xarid Savatini ko&apos;rish</span>
+                <span>{t.hero.cartBtn}</span>
               </Link>
             </div>
 
@@ -140,15 +143,15 @@ export default function HomePage() {
             <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-500 dark:text-slate-400 font-bold">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Ilova o&apos;rnatish shart emas</span>
+                <span>{t.hero.benefit1}</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Qo&apos;l skaner apparatlariga mos</span>
+                <span>{t.hero.benefit2}</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>100% Bepul xizmat</span>
+                <span>{t.hero.benefit3}</span>
               </span>
             </div>
           </motion.div>
@@ -165,13 +168,13 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-black uppercase tracking-widest text-red-600 bg-red-50 dark:bg-red-950/60 px-3.5 py-1.5 rounded-full border border-red-200 dark:border-red-900">
-              Oddiy va amaliy
+              {t.steps.sectionBadge}
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-3 tracking-tight">
-              3 ta oson qadamda xarid qiling
+              {t.steps.sectionTitle}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
-              Hech qanday ro&apos;yxatdan o&apos;tmasdan, telefoningizda darhol ishlata olasiz.
+              {t.steps.sectionDesc}
             </p>
           </div>
 

@@ -16,10 +16,12 @@ import {
   LogIn
 } from "lucide-react";
 import { getCartFromStorage } from "@/lib/cart";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export function BottomNav() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { t } = useLanguage();
   const [cartCount, setCartCount] = useState(0);
 
   const updateBadge = () => {
@@ -54,7 +56,7 @@ export function BottomNav() {
           }`}
         >
           <Home className="w-5 h-5 mb-0.5" />
-          <span className="text-[10px] tracking-tight">Asosiy</span>
+          <span className="text-[10px] tracking-tight">{t.nav.home}</span>
         </Link>
 
         {/* 2. Tarix */}
@@ -67,7 +69,7 @@ export function BottomNav() {
           }`}
         >
           <History className="w-5 h-5 mb-0.5" />
-          <span className="text-[10px] tracking-tight">Tarix</span>
+          <span className="text-[10px] tracking-tight">{t.nav.history}</span>
         </Link>
 
         {/* 3. Markaziy Skaner Tugmasi (OPTOVIK Red-Navy Gradient) */}
@@ -76,7 +78,7 @@ export function BottomNav() {
             <Link
               href="/scan"
               className="relative group p-4 rounded-full bg-gradient-to-tr from-red-600 via-rose-600 to-blue-900 text-white shadow-xl shadow-red-600/35 transition-transform border-4 border-white dark:border-slate-900 flex items-center justify-center"
-              aria-label="Shtrix kodni skanerlash"
+              aria-label={t.nav.scanner}
             >
               {/* Pulsatsiya xalqasi */}
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-30 pointer-events-none" />
@@ -102,7 +104,7 @@ export function BottomNav() {
               </span>
             )}
           </div>
-          <span className="text-[10px] tracking-tight">Savat</span>
+          <span className="text-[10px] tracking-tight">{t.nav.cart}</span>
         </Link>
 
         {/* 5. Profil / Kirish */}

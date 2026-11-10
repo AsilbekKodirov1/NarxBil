@@ -27,6 +27,7 @@ import { BudgetController } from "@/components/cart/BudgetController";
 import { BarcodeSvg } from "@/components/common/BarcodeSvg";
 import { QrCodeSvg } from "@/components/common/QrCodeSvg";
 import { BRAND_CONFIG } from "@/config/brand";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { 
   CartItem, 
   getCartFromStorage, 
@@ -39,6 +40,7 @@ import { useToast } from "@/components/ui/Toast";
 
 export default function CartPage() {
   const { success: toastSuccess, info: toastInfo } = useToast();
+  const { t } = useLanguage();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -78,7 +80,7 @@ export default function CartPage() {
   };
 
   const handleConfirmOrder = () => {
-    toastSuccess(`Kassa kodi tasdiqlandi: ${orderCode}. Kassirga ko'rsating!`);
+    toastSuccess(t.cart.successOrderToast);
     clearCart();
     setItems([]);
     setIsOrderModalOpen(false);
@@ -105,15 +107,15 @@ export default function CartPage() {
   const handleRemove = (productId: string, name: string) => {
     const updated = removeFromCart(productId);
     setItems(updated);
-    toastInfo(`"${name}" savatdan o'chirildi`);
+    toastInfo(`"${name}" ${t.cart.removedToast}`);
   };
 
   const handleClearAll = () => {
     if (items.length === 0) return;
-    if (confirm("Haqiqatan ham savatdagi barcha tovarlarni tozalashni xohlaysizmi?")) {
+    if (confirm(t.cart.clearAll + "?")) {
       clearCart();
       setItems([]);
-      toastSuccess("Savat muvaffaqiyatli tozalandi");
+      toastSuccess(t.cart.clearedToast);
     }
   };
 
@@ -129,20 +131,20 @@ export default function CartPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
               <ShoppingBag className="w-7 h-7 text-red-600" />
-              <span>Xarid Savati</span>
+              <span>{t.cart.title}</span>
             </h1>
             <p className="text-slate-500 text-xs sm:text-sm mt-1">
-              Skanerlangan barcha tovarlar va jami hisob-kitob
+              {t.hero.statusBadge}
             </p>
           </div>
 
           {items.length > 0 && (
             <button
               onClick={handleClearAll}
-              className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100/80 px-3 py-2 rounded-xl border border-rose-200/50 transition flex items-center gap-1.5"
+              className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100/80 px-3 py-2 rounded-xl border border-rose-200/50 transition flex items-center gap-1.5 cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
-              <span>Savatni tozalash</span>
+              <span>{t.cart.clearAll}</span>
             </button>
           )}
         </div>
@@ -170,10 +172,10 @@ export default function CartPage() {
             </div>
 
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">
-              Savatingiz hozircha bo&apos;sh
+              {t.cart.emptyTitle}
             </h2>
             <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-8">
-              Kassaga bormasdan narxlarni bilish va hisoblab borish uchun mahsulotlar shtrix kodini skanerlang.
+              {t.cart.emptyDesc}
             </p>
 
             <Link
@@ -181,7 +183,7 @@ export default function CartPage() {
               className="inline-flex items-center gap-2.5 px-6 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-xl shadow-red-500/25 hover:opacity-95 active:scale-95 transition"
             >
               <ScanBarcode className="w-5 h-5" />
-              <span>Skanerlashni boshlash</span>
+              <span>{t.cart.startShopping}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -311,24 +313,24 @@ export default function CartPage() {
             <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xl shadow-red-500/5 sticky top-24 space-y-4">
               <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
                 <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">
-                  Hisob-kitob xulosasi
+                  {t.cart.orderSummary}
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  Kassaga bormasdan taxminiy hisob
+                  {t.hero.statusBadge}
                 </p>
               </div>
 
               <div className="space-y-2.5 text-sm">
-                <div className="flex justify-between text-slate-600">
-                  <span>Jami tovarlar soni:</span>
-                  <span className="font-bold text-slate-900 font-price">{totalItems} ta</span>
+                <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <span>{t.cart.itemsCount}</span>
+                  <span className="font-bold text-slate-900 dark:text-white font-price">{totalItems} {t.cashier.quantityCol.toLowerCase()}</span>
                 </div>
 
                 {totalSavings > 0 && (
-                  <div className="flex justify-between text-emerald-600 font-semibold bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/60">
+                  <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-xl border border-emerald-200/60 dark:border-emerald-900">
                     <span className="flex items-center gap-1">
                       <Tag className="w-3.5 h-3.5" />
-                      <span>Chegirmadan tejov:</span>
+                      <span>{t.cart.savings}</span>
                     </span>
                     <span className="font-price font-bold">
                       -{BRAND_CONFIG.currency.format(totalSavings)}
@@ -339,13 +341,15 @@ export default function CartPage() {
 
               <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
                 <div className="flex justify-between items-baseline mb-1">
-                  <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Umumiy summa:</span>
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                    {t.cart.totalToPay}
+                  </span>
                   <AnimatedCounter
                     value={totalSum}
-                    className="text-2xl sm:text-3xl text-red-600 dark:text-red-400 tracking-tight"
+                    className="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 tracking-tight"
                   />
                 </div>
-                <div className="text-[11px] text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1 mt-3">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1 mt-3">
                   <AlertCircle className="w-3 h-3 text-amber-500 flex-shrink-0" />
                   <span>{BRAND_CONFIG.priceDisclaimer}</span>
                 </div>
@@ -359,7 +363,7 @@ export default function CartPage() {
                   className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-extrabold text-sm shadow-xl shadow-red-500/25 hover:shadow-2xl hover:shadow-red-500/35 active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <CheckCircle className="w-5 h-5 text-white" />
-                  <span>Buyurtma berish (Kassaga yo&apos;naltirish)</span>
+                  <span>{t.cart.checkoutBtn}</span>
                 </button>
 
                 <Link
@@ -367,7 +371,7 @@ export default function CartPage() {
                   className="w-full py-3.5 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs transition flex items-center justify-center gap-2 text-center border border-slate-200/80 dark:border-slate-700 shadow-sm"
                 >
                   <ScanBarcode className="w-4 h-4 text-red-600" />
-                  <span>Yana boshqa tovar skanerlash</span>
+                  <span>{t.cart.scanMore}</span>
                 </Link>
               </div>
             </div>
@@ -395,14 +399,32 @@ export default function CartPage() {
                 <div className="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
                   <div className="flex items-center gap-2 text-slate-900 dark:text-white font-extrabold text-lg">
                     <Receipt className="w-5 h-5 text-red-600" />
-                    <span>Buyurtma Xulosasi</span>
+                    <span>{t.cart.orderSummary}</span>
                   </div>
                   <button
                     onClick={() => setIsOrderModalOpen(false)}
-                    className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition"
+                    className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
+                </div>
+
+                {/* Oxirida savatda qancha chiqayotgani (Grand Total Banner) */}
+                <div className="bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white rounded-2xl p-4 mb-4 text-center shadow-lg shadow-red-500/20">
+                  <div className="text-[10.5px] font-bold text-red-100 uppercase tracking-widest">
+                    {t.cart.totalToPay}
+                  </div>
+                  <div className="font-price font-black text-3xl sm:text-4xl text-white mt-1 tracking-tight">
+                    {BRAND_CONFIG.currency.format(totalSum)}
+                  </div>
+                  <div className="text-xs font-semibold text-red-100 mt-1 flex items-center justify-center gap-2">
+                    <span>{totalItems} {t.cashier.quantityCol.toLowerCase()}</span>
+                    {totalSavings > 0 && (
+                      <span className="bg-white/20 px-2 py-0.5 rounded-full text-[11px] font-bold text-white">
+                        {t.cart.savings} -{BRAND_CONFIG.currency.format(totalSavings)}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Kassa shtrix / QR kodi tanlagichi va haqiqiy Barcode / QR renderer */}
@@ -418,7 +440,7 @@ export default function CartPage() {
                       }`}
                     >
                       <ScanBarcode className="w-3.5 h-3.5" />
-                      <span>Shtrix-kod (Laser skaner)</span>
+                      <span>{t.cart.barcodeTab}</span>
                     </button>
                     <button
                       type="button"
@@ -430,7 +452,7 @@ export default function CartPage() {
                       }`}
                     >
                       <QrCode className="w-3.5 h-3.5" />
-                      <span>QR-kod</span>
+                      <span>{t.cart.qrTab}</span>
                     </button>
                   </div>
 
@@ -444,27 +466,7 @@ export default function CartPage() {
 
                   <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 font-semibold max-w-xs mx-auto leading-relaxed flex items-center justify-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>Kassir apparati bilan telefoningizdagi ushbu kodni 1 marta skaner qilganda butun savatingiz ochiladi.</span>
-                  </div>
-                </div>
-
-                {/* Xulosa ma'lumotlari */}
-                <div className="space-y-2 text-sm mb-6">
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                    <span>Mahsulotlar soni:</span>
-                    <span className="font-bold text-slate-900 dark:text-white font-price">{totalItems} ta</span>
-                  </div>
-                  {totalSavings > 0 && (
-                    <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-semibold">
-                      <span>Jami tejov:</span>
-                      <span className="font-bold font-price">-{BRAND_CONFIG.currency.format(totalSavings)}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-base font-extrabold text-slate-900 dark:text-white pt-2 border-t border-slate-100 dark:border-slate-800">
-                    <span>To&apos;lanadigan summa:</span>
-                    <span className="text-red-600 dark:text-red-400 font-price font-extrabold">
-                      {BRAND_CONFIG.currency.format(totalSum)}
-                    </span>
+                    <span>{t.cart.cashierInstruction}</span>
                   </div>
                 </div>
 
@@ -475,14 +477,14 @@ export default function CartPage() {
                     className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/35 active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <CheckCircle className="w-4 h-4" />
-                    <span>Buyurtmani tasdiqlash</span>
+                    <span>{t.cart.confirmOrder}</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsOrderModalOpen(false)}
-                    className="w-full py-2.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition"
+                    className="w-full py-2.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer"
                   >
-                    Savatga qaytish
+                    {t.cart.backToCart}
                   </button>
                 </div>
               </motion.div>

@@ -6,6 +6,7 @@ import { BRAND_CONFIG } from "@/config/brand";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { LanguageProvider } from "@/components/i18n/LanguageProvider";
 
 const sora = Sora({
   subsets: ["latin", "latin-ext"],
@@ -66,9 +67,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-[#FAFAFF] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 selection:bg-red-600 selection:text-white transition-colors duration-200">
         <ThemeProvider>
           <AuthProvider>
-            <ToastProvider>
-              {children}
-            </ToastProvider>
+            <LanguageProvider>
+              <ToastProvider>
+                {children}
+              </ToastProvider>
+            </LanguageProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
