@@ -5,7 +5,6 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { ScanBarcode, Store, Percent, CheckCircle2, ShieldCheck, Tag } from "lucide-react";
-import { playSuccessChime } from "@/lib/audio";
 
 interface DemoProduct {
   name: string;
@@ -52,6 +51,7 @@ const DEMO_PRODUCTS: DemoProduct[] = [
 export function PhoneMockup() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [scanStep, setScanStep] = useState<"scanning" | "detected">("scanning");
 
   const activeProduct = DEMO_PRODUCTS[activeIdx];
@@ -78,15 +78,10 @@ export function PhoneMockup() {
   const glareX = useTransform(smoothX, [0, 1], [0, 100]);
   const glareY = useTransform(smoothY, [0, 1], [0, 100]);
 
-  // Avtomatik skanerlash davri
+  // Avtomatik skanerlash davri (ovozsiz)
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setScanStep("detected");
-      try {
-        playSuccessChime();
-      } catch {
-        // audio muted until user interaction
-      }
     }, 1900);
 
     const timer2 = setTimeout(() => {
@@ -117,11 +112,6 @@ export function PhoneMockup() {
   const handleManualSelect = (idx: number) => {
     setActiveIdx(idx);
     setScanStep("scanning");
-    try {
-      playSuccessChime();
-    } catch {
-      // safe audio
-    }
   };
 
   return (
@@ -341,24 +331,50 @@ export function PhoneMockup() {
               <div className="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b-2 border-r-2 border-red-500 rounded-br-md" />
             </div>
 
-            {/* Tovarlar almashtirish tugmalari (Interactive Test Pills) */}
+            {/* Tovarlar almashtirish tugmalari (Interactive Test Pills with Dynamic Hover Layer) */}
             <div
               style={{ transform: "translateZ(35px)" }}
-              className="flex items-center gap-1.5 z-20 mb-1"
+              onMouseLeave={() => setHoveredIdx(null)}
+              className="relative flex items-center p-1 bg-slate-900/90 backdrop-blur-md rounded-xl border border-slate-800/90 gap-1 z-20 mb-1"
             >
-              {DEMO_PRODUCTS.map((prod, idx) => (
-                <button
-                  key={prod.barcode}
-                  onClick={() => handleManualSelect(idx)}
-                  className={`px-2.5 py-1 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
-                    activeIdx === idx
-                      ? "bg-red-600 text-white shadow-md shadow-red-500/50 scale-105"
-                      : "bg-slate-800/90 text-slate-300 hover:bg-slate-700"
-                  }`}
-                >
-                  {prod.shortName}
-                </button>
-              ))}
+              {DEMO_PRODUCTS.map((prod, idx) => {
+                const isSelected = activeIdx === idx;
+                const isHovered = hoveredIdx === idx;
+                return (
+                  <button
+                    key={prod.barcode}
+                    onClick={() => handleManualSelect(idx)}
+                    onMouseEnter={() => setHoveredIdx(idx)}
+                    className={`relative px-2.5 py-1 rounded-lg text-[9.5px] font-bold transition-colors duration-150 cursor-pointer select-none ${
+                      isSelected
+                        ? "text-white"
+                        : "text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    {/* Active Tanlangan Fon */}
+                    {isSelected && (
+                      <motion.div
+                        layoutId="activePill"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        className="absolute inset-0 bg-red-600 rounded-lg shadow-[0_2px_12px_rgba(220,38,38,0.55)] z-0"
+                      />
+                    )}
+
+                    {/* Kursor kelganda orqasida silliq hover foni */}
+                    {!isSelected && isHovered && (
+                      <motion.div
+                        layoutId="hoverPill"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        className="absolute inset-0 bg-white/10 rounded-lg border border-white/10 z-0"
+                      />
+                    )}
+
+                    <span className="relative z-10 flex items-center gap-1">
+                      {prod.shortName}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
