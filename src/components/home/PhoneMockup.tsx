@@ -4,7 +4,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { ScanBarcode, Store, Percent, CheckCircle2 } from "lucide-react";
+import { ScanBarcode, Store, Percent, CheckCircle2, ShieldCheck, Tag } from "lucide-react";
 import { playSuccessChime } from "@/lib/audio";
 
 interface DemoProduct {
@@ -15,6 +15,7 @@ interface DemoProduct {
   originalPrice?: string;
   discountBadge?: string;
   shortName: string;
+  savings: string;
 }
 
 const DEMO_PRODUCTS: DemoProduct[] = [
@@ -26,6 +27,7 @@ const DEMO_PRODUCTS: DemoProduct[] = [
     originalPrice: "13 500 so'm",
     discountBadge: "-12% TEJOV",
     shortName: "Sut 1L",
+    savings: "1 600 so'm tejaldi",
   },
   {
     name: "Coca-Cola Classic 1.5L",
@@ -35,6 +37,7 @@ const DEMO_PRODUCTS: DemoProduct[] = [
     originalPrice: "16 000 so'm",
     discountBadge: "-9% AKSIYA",
     shortName: "Coca-Cola",
+    savings: "1 500 so'm tejaldi",
   },
   {
     name: "KitKat Shokolad 40g",
@@ -42,6 +45,7 @@ const DEMO_PRODUCTS: DemoProduct[] = [
     barcode: "7613035368545",
     price: "8 200 so'm",
     shortName: "KitKat",
+    savings: "Standart narx",
   },
 ];
 
@@ -52,18 +56,27 @@ export function PhoneMockup() {
 
   const activeProduct = DEMO_PRODUCTS[activeIdx];
 
-  // 3D Tilt Spring Physics
+  // 3D Tilt Spring Physics (Ultra-smooth interpolation)
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
 
-  const springConfig = { damping: 22, stiffness: 220, mass: 0.6 };
-  const smoothMouseX = useSpring(mouseX, springConfig);
-  const smoothMouseY = useSpring(mouseY, springConfig);
+  const springConfig = { damping: 26, stiffness: 240, mass: 0.5 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
 
-  const rotateX = useTransform(smoothMouseY, [0, 1], [14, -14]);
-  const rotateY = useTransform(smoothMouseX, [0, 1], [-16, 16]);
-  const glareX = useTransform(smoothMouseX, [0, 1], [0, 100]);
-  const glareY = useTransform(smoothMouseY, [0, 1], [0, 100]);
+  const rotateX = useTransform(smoothY, [0, 1], [15, -15]);
+  const rotateY = useTransform(smoothX, [0, 1], [-18, 18]);
+
+  // Parallax offsets for floating 3D companion elements
+  const floatXLeft = useTransform(smoothX, [0, 1], [22, -22]);
+  const floatYLeft = useTransform(smoothY, [0, 1], [18, -18]);
+
+  const floatXRight = useTransform(smoothX, [0, 1], [-26, 26]);
+  const floatYRight = useTransform(smoothY, [0, 1], [-20, 20]);
+
+  // Specular Glare position
+  const glareX = useTransform(smoothX, [0, 1], [0, 100]);
+  const glareY = useTransform(smoothY, [0, 1], [0, 100]);
 
   // Avtomatik skanerlash davri
   useEffect(() => {
@@ -72,14 +85,14 @@ export function PhoneMockup() {
       try {
         playSuccessChime();
       } catch {
-        // audio muted by default until user interaction
+        // audio muted until user interaction
       }
-    }, 1800);
+    }, 1900);
 
     const timer2 = setTimeout(() => {
       setScanStep("scanning");
       setActiveIdx((prev) => (prev + 1) % DEMO_PRODUCTS.length);
-    }, 4800);
+    }, 5000);
 
     return () => {
       clearTimeout(timer1);
@@ -104,6 +117,11 @@ export function PhoneMockup() {
   const handleManualSelect = (idx: number) => {
     setActiveIdx(idx);
     setScanStep("scanning");
+    try {
+      playSuccessChime();
+    } catch {
+      // safe audio
+    }
   };
 
   return (
@@ -111,23 +129,101 @@ export function PhoneMockup() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative py-8 select-none perspective-[1400px] flex flex-col items-center justify-center"
+      className="relative w-full max-w-[480px] sm:max-w-[540px] h-[580px] sm:h-[620px] select-none perspective-[1600px] flex items-center justify-center mx-auto"
     >
-      {/* 3D Zamin Soyasi (Ambient Occlusion Floor Shadow) */}
+      {/* 3D Zamin Soyasi (Ambient Radial Floor Shadow) */}
       <motion.div
         animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.35, 0.45, 0.35],
+          scale: [0.95, 1.08, 0.95],
+          opacity: [0.35, 0.5, 0.35],
         }}
         transition={{
-          duration: 4,
+          duration: 4.5,
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute -bottom-4 w-[260px] sm:w-[300px] h-[34px] rounded-[100%] bg-gradient-to-r from-red-600/20 via-blue-950/40 to-red-600/20 blur-xl pointer-events-none z-0"
+        className="absolute -bottom-6 w-[280px] sm:w-[340px] h-[40px] rounded-[100%] bg-gradient-to-r from-red-600/30 via-slate-950/60 to-blue-900/40 blur-2xl pointer-events-none z-0"
       />
 
-      {/* Asosiy 3D Harakatlanuvchi Telefon Qurilmasi */}
+      {/* ======================================================== */}
+      {/* 3D FLOATING COMPANION 1: CHAP TOMONDAGI SERRATED NARX TEGI */}
+      {/* ======================================================== */}
+      <motion.div
+        style={{
+          x: floatXLeft,
+          y: floatYLeft,
+          transformStyle: "preserve-3d",
+          transform: "translateZ(85px) rotateZ(-7deg)",
+        }}
+        animate={{
+          y: [0, -12, 0],
+        }}
+        transition={{
+          y: { duration: 4.2, repeat: Infinity, ease: "easeInOut" },
+        }}
+        className="hidden sm:flex absolute -left-6 top-24 z-30 flex-col bg-white dark:bg-[#0E1526] rounded-2xl p-3.5 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35)] border border-slate-200 dark:border-slate-700/80 w-[170px] pointer-events-none"
+      >
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 shadow-inner" />
+          <span className="text-[9px] font-mono font-bold text-slate-400">#SUPER-TEJOV</span>
+        </div>
+
+        <div className="flex items-center gap-1 text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-0.5">
+          <Tag className="w-3 h-3" />
+          <span>Aksiya Narxi</span>
+        </div>
+
+        <div className="font-price font-extrabold text-lg text-slate-900 dark:text-white leading-tight">
+          {activeProduct.price}
+        </div>
+
+        <div className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1 pt-1 border-t border-dashed border-slate-200 dark:border-slate-700">
+          <CheckCircle2 className="w-2.5 h-2.5" />
+          <span>{activeProduct.savings}</span>
+        </div>
+      </motion.div>
+
+      {/* ======================================================== */}
+      {/* 3D FLOATING COMPANION 2: O'NG TOMONDAGI KASSA CHEKI / QR */}
+      {/* ======================================================== */}
+      <motion.div
+        style={{
+          x: floatXRight,
+          y: floatYRight,
+          transformStyle: "preserve-3d",
+          transform: "translateZ(95px) rotateZ(6deg)",
+        }}
+        animate={{
+          y: [0, -14, 0],
+        }}
+        transition={{
+          y: { duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
+        }}
+        className="hidden sm:flex absolute -right-6 bottom-28 z-30 flex-col bg-gradient-to-br from-red-600 to-blue-950 text-white rounded-2xl p-3.5 shadow-[0_20px_50px_-10px_rgba(220,38,38,0.45)] border-2 border-white/20 w-[180px] pointer-events-none"
+      >
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[8.5px] uppercase font-black tracking-widest text-red-200">
+            KASSA TO&apos;LOV KODI
+          </span>
+          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+        </div>
+
+        <div className="font-mono font-black text-xl tracking-wider text-white">
+          #OPT-74829
+        </div>
+
+        <div className="flex items-center justify-between pt-2 mt-1 border-t border-white/20 text-[9px] font-bold text-red-100">
+          <span className="flex items-center gap-1">
+            <ShieldCheck className="w-3 h-3 text-emerald-300" />
+            <span>Kassirga Tayyor</span>
+          </span>
+          <span className="text-white font-black">1 soniya</span>
+        </div>
+      </motion.div>
+
+      {/* ======================================================== */}
+      {/* ASOSIY 3D TELEFON QURILMASI (Hero Terminal Device) */}
+      {/* ======================================================== */}
       <motion.div
         style={{
           rotateX,
@@ -140,25 +236,25 @@ export function PhoneMockup() {
         transition={{
           y: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
         }}
-        className="relative w-[285px] sm:w-[315px] h-[550px] sm:h-[580px] bg-[#0E1526] rounded-[48px] p-3 shadow-[0_30px_70px_-15px_rgba(11,21,40,0.5),0_15px_30px_-10px_rgba(220,38,38,0.3)] border-4 border-[#1E293B] cursor-grab active:cursor-grabbing group"
+        className="relative w-[285px] sm:w-[315px] h-[550px] sm:h-[580px] bg-[#0E1526] rounded-[50px] p-3 shadow-[0_35px_80px_-15px_rgba(11,21,40,0.6),0_20px_40px_-10px_rgba(220,38,38,0.35)] border-4 border-slate-700/80 cursor-grab active:cursor-grabbing z-20"
       >
-        {/* Yon tugmalar (Physical metallic hardware buttons) */}
-        <div className="absolute -left-[7px] top-28 w-[3px] h-9 bg-slate-700 rounded-l-sm" />
-        <div className="absolute -left-[7px] top-40 w-[3px] h-12 bg-slate-700 rounded-l-sm" />
-        <div className="absolute -right-[7px] top-32 w-[3px] h-14 bg-red-700/80 rounded-r-sm" />
+        {/* Yon apparat tugmalari (Tactile physical titanium buttons) */}
+        <div className="absolute -left-[7px] top-28 w-[3px] h-9 bg-slate-600 rounded-l-sm" />
+        <div className="absolute -left-[7px] top-40 w-[3px] h-12 bg-slate-600 rounded-l-sm" />
+        <div className="absolute -right-[7px] top-32 w-[3px] h-14 bg-red-600/90 rounded-r-sm" />
 
-        {/* Ichki Shassi & Ekran (Screen Glass) */}
-        <div className="relative w-full h-full bg-[#080C14] rounded-[38px] overflow-hidden flex flex-col justify-between border border-slate-800/80 shadow-inner">
-          {/* Dinamik Oyna Yaltirashi (Specular Dynamic Glass Glare) */}
+        {/* Ichki shassi va ekran oynasi */}
+        <div className="relative w-full h-full bg-[#080C14] rounded-[40px] overflow-hidden flex flex-col justify-between border border-slate-800 shadow-inner">
+          {/* Dinamik Oyna Yaltirashi (Realistic Specular Glass Reflection) */}
           <motion.div
             style={{
-              background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 45%, transparent 70%)`,
+              background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 45%, transparent 70%)`,
             }}
-            className="absolute inset-0 z-40 pointer-events-none rounded-[38px]"
+            className="absolute inset-0 z-40 pointer-events-none rounded-[40px]"
           />
 
           {/* Dynamic Island / Kamera tirqishi */}
-          <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-full z-50 flex items-center justify-between px-2.5 border border-slate-800/60 shadow-sm">
+          <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-full z-50 flex items-center justify-between px-2.5 border border-slate-800/80 shadow-sm">
             <div className="w-2 h-2 rounded-full bg-slate-900 border border-slate-700" />
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -166,9 +262,9 @@ export function PhoneMockup() {
             </div>
           </div>
 
-          {/* 1-Qavat: Terminal Skaner Ko'rinishi */}
+          {/* 1-QAVAT: Terminal Skaner Ko'rinishi */}
           <div className="relative flex-1 bg-[#090D18] flex flex-col items-center justify-between pt-10 pb-4 px-3 overflow-hidden">
-            {/* Supermarket skaner lazer to'ri (Subtle Reticle Grid) */}
+            {/* Supermarket skaner lazer to'ri */}
             <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,#ef4444_1px,transparent_1px),linear-gradient(to_bottom,#ef4444_1px,transparent_1px)] bg-[size:18px_18px]" />
 
             {/* Yuqori brend paneli (translateZ: 35px) */}
@@ -201,10 +297,10 @@ export function PhoneMockup() {
               </div>
             </div>
 
-            {/* O'rta: Skanerlanayotgan 3D Shtrix Kod Kartasi (translateZ: 50px) */}
+            {/* O'rta: Skanerlanayotgan 3D Shtrix Kod Kartasi (translateZ: 55px) */}
             <div
-              style={{ transform: "translateZ(50px)" }}
-              className="relative my-auto w-full max-w-[230px] bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.5)] border-2 border-slate-200/80 dark:border-slate-700/80 flex flex-col items-center"
+              style={{ transform: "translateZ(55px)" }}
+              className="relative my-auto w-full max-w-[230px] bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.55)] border-2 border-slate-200/80 dark:border-slate-700/80 flex flex-col items-center"
             >
               {/* Tovar nomi */}
               <div className="text-[11px] font-extrabold text-slate-900 dark:text-white tracking-tight text-center mb-1 line-clamp-1">
@@ -221,14 +317,14 @@ export function PhoneMockup() {
                   />
                 ))}
 
-                {/* Skaner Lazer Nuri (Neon Crimson Laser Beam) */}
+                {/* Skaner Lazer Nuri (Neon Crimson Laser Beam with Glow Cone) */}
                 {scanStep === "scanning" && (
                   <motion.div
                     animate={{ top: ["8%", "92%", "8%"] }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute left-1 right-1 h-[2.5px] bg-red-500 shadow-[0_0_12px_#EF4444]"
+                    className="absolute left-1 right-1 h-[2.5px] bg-red-500 shadow-[0_0_14px_#EF4444]"
                   >
-                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-12 h-2 bg-red-400/40 blur-xs rounded-full" />
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-12 h-2 bg-red-400/50 blur-xs rounded-full" />
                   </motion.div>
                 )}
               </div>
@@ -247,17 +343,17 @@ export function PhoneMockup() {
 
             {/* Tovarlar almashtirish tugmalari (Interactive Test Pills) */}
             <div
-              style={{ transform: "translateZ(30px)" }}
+              style={{ transform: "translateZ(35px)" }}
               className="flex items-center gap-1.5 z-20 mb-1"
             >
               {DEMO_PRODUCTS.map((prod, idx) => (
                 <button
                   key={prod.barcode}
                   onClick={() => handleManualSelect(idx)}
-                  className={`px-2 py-1 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
                     activeIdx === idx
-                      ? "bg-red-600 text-white shadow-sm shadow-red-500/40 scale-105"
-                      : "bg-slate-800/80 text-slate-300 hover:bg-slate-700/80"
+                      ? "bg-red-600 text-white shadow-md shadow-red-500/50 scale-105"
+                      : "bg-slate-800/90 text-slate-300 hover:bg-slate-700"
                   }`}
                 >
                   {prod.shortName}
@@ -266,7 +362,7 @@ export function PhoneMockup() {
             </div>
           </div>
 
-          {/* 2-Qavat: Pastki 3D Narx Tegi & Chek Natijasi (translateZ: 65px) */}
+          {/* 2-QAVAT: Pastki 3D Narx Tegi & Chek Natijasi (translateZ: 70px) */}
           <div className="relative z-30 p-2.5 bg-gradient-to-t from-black via-slate-950 to-transparent">
             <AnimatePresence mode="wait">
               {scanStep === "detected" ? (
@@ -276,7 +372,7 @@ export function PhoneMockup() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 15, scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 320, damping: 25 }}
-                  style={{ transform: "translateZ(65px)" }}
+                  style={{ transform: "translateZ(70px)" }}
                   className="bg-white rounded-2xl p-3 shadow-2xl border border-red-100 flex flex-col gap-2"
                 >
                   <div className="flex items-start justify-between">
@@ -321,7 +417,7 @@ export function PhoneMockup() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  style={{ transform: "translateZ(40px)" }}
+                  style={{ transform: "translateZ(45px)" }}
                   className="bg-slate-900/90 rounded-2xl p-3 border border-slate-800 text-center flex items-center justify-center gap-2"
                 >
                   <ScanBarcode className="w-4 h-4 text-red-500 animate-pulse" />
@@ -334,12 +430,6 @@ export function PhoneMockup() {
           </div>
         </div>
       </motion.div>
-
-      {/* Qo'llanma maslahat (3D interactive hover indicator) */}
-      <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-200/80 dark:border-slate-800 shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
-        <span>Kursor bilan 3D burchakni aylantiring yoki tovarlarni bosing</span>
-      </div>
     </div>
   );
 }
