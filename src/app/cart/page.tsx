@@ -12,10 +12,8 @@ import {
   Minus, 
   ScanBarcode, 
   ArrowRight, 
-  Sparkles, 
   AlertCircle,
   Tag,
-  Bot,
   CheckCircle,
   X,
   Receipt,
@@ -25,7 +23,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { BudgetController } from "@/components/cart/BudgetController";
-import { AiAssistantModal } from "@/components/cart/AiAssistantModal";
 import { BRAND_CONFIG } from "@/config/brand";
 import { 
   CartItem, 
@@ -41,7 +38,6 @@ export default function CartPage() {
   const { success: toastSuccess, info: toastInfo } = useToast();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [orderCode, setOrderCode] = useState<string>("");
 
@@ -302,7 +298,7 @@ export default function CartPage() {
                 {totalSavings > 0 && (
                   <div className="flex justify-between text-emerald-600 font-semibold bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/60">
                     <span className="flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" />
+                      <Tag className="w-3.5 h-3.5" />
                       <span>Chegirmadan tejov:</span>
                     </span>
                     <span className="font-price font-bold">
@@ -337,36 +333,17 @@ export default function CartPage() {
                   <span>Buyurtma berish (Kassaga yo&apos;naltirish)</span>
                 </button>
 
-                {/* AI Maslahatchi tugmasi */}
-                <button
-                  type="button"
-                  onClick={() => setIsAiModalOpen(true)}
-                  className="w-full py-3 px-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm active:scale-95 cursor-pointer"
-                >
-                  <Bot className="w-4 h-4 text-red-600" />
-                  <span>AI Maslahatchi (Retsept & Tahlil)</span>
-                  <Sparkles className="w-3.5 h-3.5 text-red-500 animate-pulse" />
-                </button>
-
                 <Link
                   href="/scan"
-                  className="w-full py-3 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs transition flex items-center justify-center gap-2 text-center"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs transition flex items-center justify-center gap-2 text-center border border-slate-200/80 dark:border-slate-700 shadow-sm"
                 >
-                  <ScanBarcode className="w-4 h-4" />
-                  <span>Skanerlashda davom etish</span>
+                  <ScanBarcode className="w-4 h-4 text-red-600" />
+                  <span>Yana boshqa tovar skanerlash</span>
                 </Link>
               </div>
             </div>
           </div>
         )}
-
-        {/* AI Assistent Modali */}
-        <AiAssistantModal
-          isOpen={isAiModalOpen}
-          onClose={() => setIsAiModalOpen(false)}
-          items={items}
-          budget={totalSum}
-        />
 
         {/* Buyurtma / Kassa Modali */}
         <AnimatePresence>

@@ -7,14 +7,15 @@ import { motion } from "framer-motion";
 import { 
   ScanBarcode, 
   ArrowRight, 
-  Zap, 
   Clock, 
   ShieldCheck, 
   ShoppingBag, 
-  Sparkles, 
   Smartphone, 
   CheckCircle2, 
-  LogIn
+  Receipt,
+  Store,
+  Tag,
+  Percent
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
@@ -28,159 +29,149 @@ export default function HomePage() {
     {
       num: "01",
       title: "Shtrix kodni skanerlang",
-      desc: "Telefoningiz kamerasini tovar qadog'idagi shtrix kodga to'g'rilang. Hech qanday dastur yuklab olish shart emas.",
+      desc: "Kamerangizni tovar qadog'idagi shtrix kodga to'g'rilang yoki shtrix kod raqamlarini qo'lda yozing. Ilova o'rnatish shart emas.",
       icon: ScanBarcode,
-      color: "from-red-600 to-rose-700",
+      accent: "bg-red-600 text-white",
+      tag: "1 soniyada",
     },
     {
       num: "02",
-      title: "Narxni darhol ko'ring",
-      desc: "Do'kondagi eng so'nggi aniq narx, chegirmalar va tovar to'liq ma'lumoti 1 soniyada ekranda paydo bo'ladi.",
-      icon: Zap,
-      color: "from-blue-800 to-indigo-950",
+      title: "Haqiqiy narxni ko'ring",
+      desc: "Supermarket kassa bazasidagi eng so'nggi narx, aksiya va chegirmalar foizi bilan darhol ko'rinadi.",
+      icon: Tag,
+      accent: "bg-blue-950 text-white dark:bg-slate-800",
+      tag: "Aniq va shaffof",
     },
     {
       num: "03",
-      title: "Byudjetingizni nazorat qiling",
-      desc: "Xarid savatingizga qo'shib boring va kassaga bormasdanoq umumiy summani doimo aniq bilib turing.",
-      icon: ShoppingBag,
-      color: "from-red-600 via-rose-600 to-blue-900",
+      title: "Savat va Kassa Cheki",
+      desc: "Xaridlaringizni qo'shib boring, jami hisobni kuzating va kassada to'lash uchun bitta tayyor kassa kodini oling.",
+      icon: Receipt,
+      accent: "bg-red-700 text-white",
+      tag: "Navbatsiz",
     },
   ];
 
   const features = [
     {
-      title: "Vaqtingizni tejang",
-      desc: "Narxi yozilmagan tovarlar uchun kassirni qidirish yoki kassada navbat kutishga vaqt sarflamaysiz.",
-      icon: Clock,
-      color: "text-red-600 bg-red-50 dark:bg-red-950/40",
-    },
-    {
-      title: "Aniq va shaffof narxlar",
-      desc: "Kassada to'lash paytida kutilmagan noxush narxlardan va ortiqcha xarajatlardan o'zingizni asraysiz.",
+      title: "Kassada kutilmagan narxlar bo'lmaydi",
+      desc: "Vitrinada boshqa, kassada boshqa narx chiqishidan asraydi. To'lovdan oldin hamma narsani aniq bilasiz.",
       icon: ShieldCheck,
-      color: "text-blue-800 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40",
+      badge: "Kafolatlangan aniqlik",
     },
     {
-      title: "Aksiyalar va chegirmalar",
-      desc: "Chegirmali mahsulotlarni darhol bilib olasiz — eski narx va qancha tejalayotgani yaqqol ko'rinadi.",
-      icon: Sparkles,
-      color: "text-rose-600 bg-rose-50 dark:bg-rose-950/40",
+      title: "Kassirni qidirib vaqt yo'qotmaysiz",
+      desc: "Narxi yozilmagan tovarlar uchun zal bo'ylab narx tekshirgich qidirish yoki kassaga yugurish shart emas.",
+      icon: Clock,
+      badge: "Vaqtni tejash",
     },
     {
-      title: "PWA — Telefoningizga o'rnatiladi",
-      desc: "Xuddi oddiy mobil ilova kabi telefon ekraniga o'rnatiladi va internet sekin bo'lganda ham ishlayveradi.",
+      title: "Aksiya va chegirmalar hisobi",
+      desc: "Chegirma foizi, eski narx va qancha mablag' tejalayotgani har bir tovar kartasida yaqqol ko'rinadi.",
+      icon: Percent,
+      badge: "Tejamkor xarid",
+    },
+    {
+      title: "PWA — Telefoningizda tez ishlaydi",
+      desc: "Saytni to'g'ridan-to'g'ri telefoningiz bosh ekraniga saqlab, internet sust bo'lganda ham xotirjam ishlata olasiz.",
       icon: Smartphone,
-      color: "text-red-700 bg-red-50 dark:bg-red-950/40",
+      badge: "Zamonaviy PWA",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 flex flex-col relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B14] text-slate-900 dark:text-slate-100 flex flex-col relative overflow-hidden transition-colors duration-300">
       <Navbar />
       <PwaManager />
 
-      {/* Orqa fon bezakli OPTOVIK qizil va to'q ko'k gradient bloblari */}
-      <div className="absolute top-12 left-[-10%] w-[550px] h-[550px] rounded-full bg-red-500/12 dark:bg-red-600/10 blur-3xl pointer-events-none" />
-      <div className="absolute top-96 right-[-10%] w-[550px] h-[550px] rounded-full bg-blue-900/15 dark:bg-blue-950/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-20 left-1/3 w-[450px] h-[450px] rounded-full bg-rose-500/10 blur-3xl pointer-events-none" />
+      {/* Fon to'ri (Subtle Architectural Matrix Grid - No AI Slop) */}
+      <div className="absolute inset-0 bg-[radial-gradient(#E2E8F0_1px,transparent_1px)] dark:bg-[radial-gradient(#1E293B_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none opacity-70" />
 
       {/* 1. HERO BO'LIMI */}
-      <section className="relative pt-10 pb-16 md:pt-16 md:pb-28 px-4 max-w-6xl mx-auto w-full flex-1">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="relative pt-8 pb-16 md:pt-14 md:pb-24 px-4 max-w-6xl mx-auto w-full flex-1">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           {/* Matnli qism (7 ustun) */}
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="lg:col-span-7 space-y-6 text-center lg:text-left"
+            className="lg:col-span-7 space-y-6 text-center lg:text-left z-10"
           >
-            {/* Kichik tepki nishon */}
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 dark:bg-red-950/50 border border-red-200/80 dark:border-red-900 text-red-700 dark:text-red-400 text-xs font-black shadow-sm cursor-default"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-red-600 animate-pulse" />
-              <span>Smart Supermarket Yordamchisi</span>
-            </motion.div>
+            {/* Real Retail Status Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+              <span className="tracking-wide">OPTOVIK.UZ • Jonli Supermarket Tizimi</span>
+            </div>
 
-            {/* Asosiy Sarlavha */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12]">
-              Kassaga bormasdan{" "}
-              <span className="bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 bg-clip-text text-transparent">
-                narxni biling
+            {/* Asosiy Sarlavha (High Contrast, Bold, Editorial) */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-950 dark:text-white tracking-tight leading-[1.12]">
+              Kassaga bormasdan <br className="hidden sm:inline" />
+              <span className="text-red-600 dark:text-red-500 underline decoration-red-500/30 decoration-wavy decoration-2">
+                narxni aniq biling
               </span>
             </h1>
 
             {/* Tavsif matni */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
-              {BRAND_CONFIG.description} Do&apos;kondagi xaridlaringizni osonlashtiring, vaqtingizni va pulingizni tejang!
+              Telefoningiz kamerasini tovar shtrix kodiga qarating. Do&apos;kondagi haqiqiy narx, chegirmalar va tovar ma&apos;lumotlari 1 soniyada ekranda paydo bo&apos;ladi.
             </p>
 
-            {/* Asosiy harakat tugmalari */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
-                <Link
-                  href="/scan"
-                  className="w-full min-h-[52px] px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-extrabold text-base shadow-xl shadow-red-500/25 hover:opacity-95 transition flex items-center justify-center gap-2.5 group"
-                >
-                  <ScanBarcode className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  <span>Skanerlashni boshlash</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
+            {/* 3D Taktil Harakat Tugmalari */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <Link
+                href="/scan"
+                className="w-full sm:w-auto min-h-[54px] px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-base shadow-[0_6px_0_#991B1B] hover:shadow-[0_4px_0_#991B1B] active:shadow-none hover:translate-y-0.5 active:translate-y-1.5 transition-all flex items-center justify-center gap-3 cursor-pointer group"
+              >
+                <ScanBarcode className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                <span>Kamerani yoqish & Skanerlash</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
 
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                <a
-                  href="#how-it-works"
-                  className="w-full min-h-[52px] px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800/80 transition flex items-center justify-center shadow-sm"
-                >
-                  Qanday ishlaydi?
-                </a>
-              </motion.div>
+              <Link
+                href="/cart"
+                className="w-full sm:w-auto min-h-[54px] px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm shadow-[0_4px_0_#CBD5E1] dark:shadow-[0_4px_0_#1E293B] hover:translate-y-0.5 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <ShoppingBag className="w-4 h-4 text-red-600" />
+                <span>Xarid Savatini ko&apos;rish</span>
+              </Link>
             </div>
 
-            {/* Kichik ishonch ko'rsatkichlari */}
-            <div className="pt-3 flex items-center justify-center lg:justify-start gap-6 text-xs text-slate-500 dark:text-slate-400 font-semibold">
+            {/* Haqiqiy Foyda Ko'rsatkichlari */}
+            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-500 dark:text-slate-400 font-bold">
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>O&apos;rnatish shart emas</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>Ilova o&apos;rnatish shart emas</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>100% Bepul</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>Qo&apos;l skaner apparatlariga mos</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>Tezkor natija</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>100% Bepul xizmat</span>
               </span>
             </div>
           </motion.div>
 
-          {/* O'ng tomon: 3D Animatsiyali Telefon Mockup (5 ustun) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 200 }}
-            className="lg:col-span-5 flex justify-center relative"
-          >
+          {/* O'ng tomon: Interaktiv 3D Telefon Qurilmasi (5 ustun) */}
+          <div className="lg:col-span-5 flex justify-center relative z-20">
             <PhoneMockup />
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* 2. "QANDAY ISHLAYDI?" BO'LIMI */}
-      <section id="how-it-works" className="py-20 px-4 bg-white/70 dark:bg-slate-900/40 border-y border-slate-200/60 dark:border-slate-800/60 relative">
+      {/* 2. "QANDAY ISHLAYDI?" — 3D TAKTIL KARTALAR */}
+      <section id="how-it-works" className="py-20 px-4 bg-white dark:bg-[#0B0F19] border-y border-slate-200/80 dark:border-slate-800/80 relative">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-black uppercase tracking-widest text-red-600 bg-red-50 dark:bg-red-950/60 px-3.5 py-1 rounded-full border border-red-200/60 dark:border-red-900">
-              Oddiy va qulay
+            <span className="text-xs font-black uppercase tracking-widest text-red-600 bg-red-50 dark:bg-red-950/60 px-3.5 py-1.5 rounded-full border border-red-200 dark:border-red-900">
+              Oddiy va amaliy
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-3 tracking-tight">
-              3 ta oddiy qadamda narxni biling
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-3 tracking-tight">
+              3 ta oson qadamda xarid qiling
             </h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-              Hech qanday murakkabliksiz, bir necha soniyada aniq ma&apos;lumot oling.
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
+              Hech qanday ro&apos;yxatdan o&apos;tmasdan, telefoningizda darhol ishlata olasiz.
             </p>
           </div>
 
@@ -193,24 +184,31 @@ export default function HomePage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.15, duration: 0.4 }}
-                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                  className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-red-500/5 relative transition-all group"
+                  transition={{ delay: idx * 0.12, duration: 0.4 }}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className="bg-[#FAFAFC] dark:bg-slate-900/90 p-8 rounded-3xl border-2 border-slate-200/80 dark:border-slate-800 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.08)] relative transition-all group flex flex-col justify-between"
                 >
-                  <div className="text-3xl font-black font-price text-slate-200 dark:text-slate-800 group-hover:text-red-300 dark:group-hover:text-red-900 transition-colors absolute top-6 right-6">
-                    {s.num}
-                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`w-14 h-14 rounded-2xl ${s.accent} flex items-center justify-center shadow-md`}>
+                        <Icon className="w-7 h-7" />
+                      </div>
+                      <span className="text-3xl font-black font-price text-slate-300 dark:text-slate-700">
+                        {s.num}
+                      </span>
+                    </div>
 
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${s.color} text-white flex items-center justify-center mb-6 shadow-md shadow-red-500/20`}>
-                    <Icon className="w-7 h-7" />
-                  </div>
+                    <span className="inline-block px-2.5 py-1 rounded-md bg-slate-200/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold uppercase tracking-wider mb-3">
+                      {s.tag}
+                    </span>
 
-                  <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mb-2.5">
-                    {s.title}
-                  </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                    {s.desc}
-                  </p>
+                    <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2.5">
+                      {s.title}
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                      {s.desc}
+                    </p>
+                  </div>
                 </motion.div>
               );
             })}
@@ -218,94 +216,73 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. AFZALLIKLAR BO'LIMI */}
+      {/* 3. SUPERMARKET AFZALLIKLARI */}
       <section className="py-20 px-4 max-w-6xl mx-auto w-full">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-xs font-black uppercase tracking-widest text-blue-800 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-3.5 py-1 rounded-full border border-blue-200/60 dark:border-blue-900">
-            Nega aynan {BRAND_CONFIG.name}?
+          <span className="text-xs font-black uppercase tracking-widest text-blue-900 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900">
+            Nega aynan OPTOVIK.UZ?
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-3 tracking-tight">
-            Xaridlaringiz endi ancha oson
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-3 tracking-tight">
+            Har bir xaridingizda vaqt va pulni tejang
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {features.map((f, idx) => {
             const Icon = f.icon;
             return (
               <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.4 }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+                key={idx}
+                whileHover={{ y: -4 }}
+                className="bg-white dark:bg-slate-900 p-7 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-start gap-5 transition-shadow hover:shadow-md"
               >
-                <div className={`w-12 h-12 rounded-2xl ${f.color} flex items-center justify-center mb-4`}>
+                <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center flex-shrink-0 border border-red-200/60 dark:border-red-900/50">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-extrabold text-slate-900 dark:text-white mb-2">
-                  {f.title}
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  {f.desc}
-                </p>
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400 block mb-1">
+                    {f.badge}
+                  </span>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
+                    {f.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                    {f.desc}
+                  </p>
+                </div>
               </motion.div>
             );
           })}
         </div>
       </section>
 
-      {/* 4. TIZIMGA KIRISH VA IMKONIYATLAR BANNERI (OPTOVIK Navy-Red uslubida) */}
-      <section className="py-12 px-4 max-w-6xl mx-auto w-full">
-        <div className="rounded-3xl bg-gradient-to-r from-blue-950 via-slate-900 to-slate-950 text-white p-8 sm:p-12 shadow-2xl relative overflow-hidden border border-blue-900/50">
-          {/* Bezak qizil va ko'k nurlar */}
-          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-red-600/25 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-blue-700/20 blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 max-w-xl space-y-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-red-400 text-xs font-bold border border-white/10">
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Shaxsiy hisob</span>
+      {/* 4. CTA BANNER (Real Retail Kiosk Card) */}
+      <section className="py-12 px-4 max-w-6xl mx-auto w-full mb-12">
+        <div className="relative rounded-[36px] bg-[#0E1526] text-white p-8 sm:p-12 md:p-16 overflow-hidden border-2 border-slate-800 shadow-2xl">
+          <div className="relative z-10 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/30 text-xs font-bold mb-4">
+              <Store className="w-3.5 h-3.5" />
+              <span>Supermarketda sinab ko&apos;ring</span>
             </div>
-
-            <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
-              Profilingizga kiring va barcha xaridlaringizni saqlang
-            </h3>
-
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Tizimga kirish orqali skanerlangan mahsulotlar tarixini doimo qo&apos;l ostingizda saqlashingiz, xarid savatini boshqarishingiz va xarajatlaringizni tahlil qilishingiz mumkin.
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 leading-tight">
+              Kassadagi navbatlar va narx noaniqligiga chek qo&apos;ying
+            </h2>
+            <p className="text-slate-300 text-sm sm:text-base mb-8 leading-relaxed font-medium">
+              Hoziroq kamerangizni yoqing va har qanday mahsulot shtrix kodini skanerlang.
             </p>
-
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs shadow-lg shadow-red-600/30 transition"
-                >
-                  <LogIn className="w-4 h-4" />
-                  <span>Kirish</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </motion.div>
-              
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  href="/scan"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition"
-                >
-                  <ScanBarcode className="w-4 h-4 text-red-400" />
-                  <span>Skanerlash</span>
-                </Link>
-              </motion.div>
-            </div>
+            <Link
+              href="/scan"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-base shadow-[0_6px_0_#991B1B] hover:shadow-[0_4px_0_#991B1B] active:shadow-none hover:translate-y-0.5 active:translate-y-1.5 transition-all cursor-pointer"
+            >
+              <ScanBarcode className="w-5 h-5" />
+              <span>Skanerlashni boshlash</span>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* 5. FOOTER */}
-      <footer className="mt-auto border-t border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-950 py-12 px-4 pb-24 md:pb-12 text-slate-500 dark:text-slate-400 text-xs select-none">
+      <footer className="mt-auto border-t border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-950 py-10 px-4 pb-24 md:pb-10 text-slate-500 dark:text-slate-400 text-xs select-none">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
             <Logo iconSize={30} textSize="text-lg" isLink={true} />
@@ -326,6 +303,9 @@ export default function HomePage() {
             </Link>
             <Link href="/login" className="hover:text-red-600 transition">
               Kirish
+            </Link>
+            <Link href="/admin" className="hover:text-red-600 transition">
+              Admin
             </Link>
           </div>
 
