@@ -17,10 +17,13 @@ import {
   Printer,
   ShoppingBag,
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  Camera,
+  Sparkles
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminBarcodeScannerModal } from "@/components/admin/AdminBarcodeScannerModal";
 import { BRAND_CONFIG } from "@/config/brand";
 import { OrderRecord } from "@/lib/ordersStore";
 
@@ -29,6 +32,7 @@ export default function AdminCashierPage() {
   const router = useRouter();
 
   const [scanInput, setScanInput] = useState("");
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<OrderRecord | null>(null);
   const [recentOrders, setRecentOrders] = useState<OrderRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -150,6 +154,64 @@ export default function AdminCashierPage() {
     setTimeout(() => barcodeInputRef.current?.focus(), 100);
   };
 
+  const handleCreateDemoOrder = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    try {
+      const demoCode = `OPT-${Math.floor(100000 + Math.random() * 900000)}`;
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderCode: demoCode,
+          items: [
+            {
+              id: "demo-1",
+              name: "Musaffo Sut 3.2% 1L",
+              barcode: "4780000150123",
+              price: 13500,
+              discountPrice: 11900,
+              quantity: 2,
+              category: "Sut mahsulotlari",
+            },
+            {
+              id: "demo-2",
+              name: "Coca-Cola Classic 1.5L",
+              barcode: "5449000000996",
+              price: 16000,
+              discountPrice: 14500,
+              quantity: 1,
+              category: "Ichimliklar",
+            },
+            {
+              id: "demo-3",
+              name: "KitKat Shokolad 40g",
+              barcode: "7613035368545",
+              price: 8200,
+              discountPrice: null,
+              quantity: 3,
+              category: "Shirinliklar",
+            },
+          ],
+          totalSum: 62900,
+          totalSavings: 4700,
+          totalItems: 6,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSuccessMessage(`Demo buyurtma #${demoCode} yaratildi va kassa ekraniga yuklandi!`);
+        setCurrentOrder(data.order);
+        fetchRecentOrders();
+      }
+    } catch {
+      setErrorMessage("Demo buyurtma yaratishda xatolik yuz berdi");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-[#FAFAFF] flex items-center justify-center">
@@ -198,40 +260,64 @@ export default function AdminCashierPage() {
 
         {/* 1. SKANER / INPUT BLOKI */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl border-2 border-red-500/30 p-5 sm:p-6 shadow-xl mb-6">
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 items-center">
-            <div className="relative flex-1 w-full">
-              <ScanBarcode className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-red-600" />
-              <input
-                ref={barcodeInputRef}
-                type="text"
-                value={scanInput}
-                onChange={(e) => setScanInput(e.target.value)}
-                placeholder="Kassa shtrix-kodini skanerlang yoki yozing (masalan: OPT-748291)..."
-                className="w-full pl-13 pr-4 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border-2 border-slate-300 dark:border-slate-700 focus:border-red-600 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-lg outline-none transition placeholder:text-slate-400"
-                autoFocus
-              />
+          <div className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 items-center">
+              <div className="relative flex-1 w-full">
+                <ScanBarcode className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-red-600" />
+                <input
+                  ref={barcodeInputRef}
+                  type="text"
+                  value={scanInput}
+                  onChange={(e) => setScanInput(e.target.value)}
+                  placeholder="Kassa shtrix-kodini skanerlang yoki yozing (masalan: OPT-748291)..."
+                  className="w-full pl-13 pr-4 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border-2 border-slate-300 dark:border-slate-700 focus:border-red-600 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-lg outline-none transition placeholder:text-slate-400"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => setIsCameraOpen(true)}
+                  className="flex-1 sm:flex-initial px-5 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 hover:from-red-700 hover:to-blue-950 text-white font-bold text-sm shadow-lg shadow-red-500/25 transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                >
+                  <Camera className="w-5 h-5 text-white animate-pulse" />
+                  <span>Kamera bilan skanerlash</span>
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isLoading || !scanInput.trim()}
+                  className="px-5 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 disabled:opacity-50 font-bold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <Search className="w-4 h-4" />
+                      <span>Ochish</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>Kassa apparatingiz bo&apos;lmasa, <b>&quot;Kamera bilan skanerlash&quot;</b> tugmasi orqali telefoningizda mijoz kodini o&apos;qita olasiz.</span>
+              </span>
+
+              <button
+                type="button"
+                onClick={handleCreateDemoOrder}
+                className="text-red-600 dark:text-red-400 hover:underline font-bold flex items-center gap-1 cursor-pointer bg-red-50 dark:bg-red-950/40 px-3 py-1.5 rounded-xl border border-red-200/50 dark:border-red-900"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-red-500" />
+                <span>Sinov uchun demo buyurtma ochish</span>
+              </button>
             </div>
-
-            <button
-              type="submit"
-              disabled={isLoading || !scanInput.trim()}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold text-base shadow-lg shadow-red-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
-            >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  <Search className="w-5 h-5" />
-                  <span>Savatni ochish</span>
-                </>
-              )}
-            </button>
-          </form>
-
-          <p className="mt-2.5 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Kassa apparati (shtrix-kod to‘pponchasi) ulanganda, to‘g‘ridan-to‘g‘ri kodni urishingiz kifoya — avtomatik ochiladi.</span>
-          </p>
+          </div>
         </div>
 
         {/* Xabarlar */}
@@ -455,6 +541,16 @@ export default function AdminCashierPage() {
           )}
         </div>
       </main>
+
+      {/* Telefon kamerasi orqali shtrix-kod skanerlash modali */}
+      <AdminBarcodeScannerModal
+        isOpen={isCameraOpen}
+        onClose={() => setIsCameraOpen(false)}
+        onDetected={(detectedCode) => {
+          setIsCameraOpen(false);
+          handleLookupOrder(detectedCode);
+        }}
+      />
     </div>
   );
 }

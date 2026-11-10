@@ -30,7 +30,7 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full backdrop-blur-md transition-colors duration-200 border-b ${
+      className={`sticky top-0 z-50 w-full backdrop-blur-md transition-colors duration-200 border-b shadow-xs ${
         isScanPage
           ? "bg-black/90 border-white/10 text-white"
           : "bg-white/90 dark:bg-[#0B0F19]/90 border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-100"

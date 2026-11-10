@@ -80,7 +80,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B14] text-slate-900 dark:text-slate-100 flex flex-col relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B14] text-slate-900 dark:text-slate-100 flex flex-col relative overflow-x-clip transition-colors duration-300">
       <Navbar />
       <PwaManager />
 
