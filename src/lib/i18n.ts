@@ -52,6 +52,11 @@ export interface Translations {
     cashierInstruction: string;
     confirmOrder: string;
     backToCart: string;
+    waitingCashierTitle: string;
+    waitingCashierDesc: string;
+    orderPaidTitle: string;
+    orderPaidDesc: string;
+    closeBtn: string;
     successOrderToast: string;
     removedToast: string;
     clearedToast: string;
@@ -135,7 +140,12 @@ export const translations: Record<Language, Translations> = {
       cashierInstruction: "Kassir apparati bilan telefoningizdagi ushbu kodni 1 marta skaner qilganda butun savatingiz ochiladi.",
       confirmOrder: "Buyurtmani tasdiqlash",
       backToCart: "Savatga qaytish",
-      successOrderToast: "Kassa kodi tasdiqlandi. Kassirga ko'rsating!",
+      waitingCashierTitle: "Kassir skaneri kutilmoqda...",
+      waitingCashierDesc: "Kassir ushbu shtrix-kodni skanerlab to'lovni tasdiqlashi bilan xaridingiz avtomatik yakunlanadi.",
+      orderPaidTitle: "To'lov muvaffaqiyatli qabul qilindi!",
+      orderPaidDesc: "Kassir to'lovni tasdiqladi. Xaridingiz uchun rahmat!",
+      closeBtn: "Yopish",
+      successOrderToast: "To'lov qabul qilindi va buyurtma tasdiqlandi!",
       removedToast: "Savatdan o'chirildi",
       clearedToast: "Savat muvaffaqiyatli tozalandi",
     },
@@ -216,7 +226,12 @@ export const translations: Record<Language, Translations> = {
       cashierInstruction: "Покажите этот штрих-код кассиру. Кассир отсканирует его один раз, и вся корзина появится на кассе.",
       confirmOrder: "Подтвердить заказ",
       backToCart: "Вернуться в корзину",
-      successOrderToast: "Код кассы подтвержден. Покажите его кассиру!",
+      waitingCashierTitle: "Ожидание сканирования кассиром...",
+      waitingCashierDesc: "Как только кассир отсканирует этот штрих-код и примет оплату, заказ завершится автоматически.",
+      orderPaidTitle: "Оплата успешно принята!",
+      orderPaidDesc: "Кассир подтвердил оплату. Спасибо за покупку!",
+      closeBtn: "Закрыть",
+      successOrderToast: "Оплата принята, заказ успешно подтвержден!",
       removedToast: "Удалено из корзины",
       clearedToast: "Корзина успешно очищена",
     },
@@ -297,7 +312,12 @@ export const translations: Record<Language, Translations> = {
       cashierInstruction: "Show this code to the cashier. They scan it once with their scanner, and your entire cart loads instantly.",
       confirmOrder: "Confirm Order",
       backToCart: "Back to Cart",
-      successOrderToast: "Cashier code confirmed. Show it to the cashier!",
+      waitingCashierTitle: "Waiting for cashier scan...",
+      waitingCashierDesc: "Once the cashier scans this barcode and confirms payment, your purchase will complete automatically.",
+      orderPaidTitle: "Payment successfully received!",
+      orderPaidDesc: "The cashier confirmed payment. Thank you for your purchase!",
+      closeBtn: "Close",
+      successOrderToast: "Payment received and order confirmed!",
       removedToast: "Removed from cart",
       clearedToast: "Cart cleared successfully",
     },

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
 import { 
   ShoppingBag, 
   Trash2, 
@@ -46,12 +47,14 @@ export default function CartPage() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [orderCode, setOrderCode] = useState<string>("");
   const [codeType, setCodeType] = useState<"BARCODE" | "QR">("BARCODE");
+  const [isOrderPaid, setIsOrderPaid] = useState(false);
 
   const handleStartOrder = async () => {
     if (items.length === 0) return;
     const { totalItems: count, totalSum: sum, totalSavings: savings } = calculateCartTotal(items);
     const randomCode = `OPT-${Math.floor(100000 + Math.random() * 900000)}`;
     setOrderCode(randomCode);
+    setIsOrderPaid(false);
     setIsOrderModalOpen(true);
 
     try {
@@ -79,12 +82,39 @@ export default function CartPage() {
     }
   };
 
-  const handleConfirmOrder = () => {
-    toastSuccess(t.cart.successOrderToast);
-    clearCart();
-    setItems([]);
-    setIsOrderModalOpen(false);
-  };
+  // Kassir skanerlab to'lovni tasdiqlaganini real vaqtda avtomatik kuzatish (Polling)
+  useEffect(() => {
+    if (!isOrderModalOpen || !orderCode || isOrderPaid) return;
+
+    let isMounted = true;
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/orders/${encodeURIComponent(orderCode)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (isMounted && data.success && data.order?.status === "PAID") {
+          setIsOrderPaid(true);
+          try {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 },
+            });
+          } catch {}
+          clearCart();
+          setItems([]);
+          toastSuccess(t.cart.successOrderToast);
+        }
+      } catch (err) {
+        console.warn("Order poll error:", err);
+      }
+    }, 1200);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [isOrderModalOpen, orderCode, isOrderPaid, t.cart.successOrderToast, toastSuccess]);
 
   const loadCart = () => {
     setItems(getCartFromStorage());
@@ -122,7 +152,7 @@ export default function CartPage() {
   const { totalItems, totalSum, totalSavings } = calculateCartTotal(items);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFF] flex flex-col">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B14] text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
       <Navbar />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6 pb-24 sm:py-10">
@@ -133,7 +163,7 @@ export default function CartPage() {
               <ShoppingBag className="w-7 h-7 text-red-600" />
               <span>{t.cart.title}</span>
             </h1>
-            <p className="text-slate-500 text-xs sm:text-sm mt-1">
+            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1">
               {t.hero.statusBadge}
             </p>
           </div>
@@ -141,7 +171,7 @@ export default function CartPage() {
           {items.length > 0 && (
             <button
               onClick={handleClearAll}
-              className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100/80 px-3 py-2 rounded-xl border border-rose-200/50 transition flex items-center gap-1.5 cursor-pointer"
+              className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100/80 dark:hover:bg-rose-900/60 px-3 py-2 rounded-xl border border-rose-200/50 dark:border-rose-900/60 transition flex items-center gap-1.5 cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>{t.cart.clearAll}</span>
@@ -153,7 +183,7 @@ export default function CartPage() {
         {!isLoaded ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-24 bg-white rounded-2xl animate-pulse border border-slate-100" />
+              <div key={i} className="h-24 bg-white dark:bg-slate-900 rounded-2xl animate-pulse border border-slate-100 dark:border-slate-800" />
             ))}
           </div>
         ) : items.length === 0 ? (
@@ -277,7 +307,7 @@ export default function CartPage() {
 
                         <div className="text-right">
                           <div className="text-xs font-semibold text-slate-400">Jami:</div>
-                          <div className="font-price font-extrabold text-red-600 text-sm sm:text-base">
+                          <div className="font-price font-extrabold text-red-600 dark:text-red-400 text-sm sm:text-base">
                             {BRAND_CONFIG.currency.format(itemTotal)}
                           </div>
                         </div>
@@ -286,7 +316,7 @@ export default function CartPage() {
                       {/* O'chirish tugmasi */}
                       <button
                         onClick={() => handleRemove(item.id, item.name)}
-                        className="p-2 text-slate-400 hover:text-rose-600 transition rounded-xl hover:bg-rose-50"
+                        className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40"
                         title="O'chirish"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -295,21 +325,21 @@ export default function CartPage() {
                   );
                 })}
               </AnimatePresence>
+              </div>
 
               {/* Yana skanerlash tugmasi */}
               <div className="pt-2">
                 <Link
                   href="/scan"
-                  className="w-full py-3 px-4 rounded-2xl border-2 border-dashed border-red-300 hover:border-red-500 bg-red-50/50 hover:bg-red-50 text-red-700 font-bold text-sm transition flex items-center justify-center gap-2"
+                  className="w-full py-3 px-4 rounded-2xl border-2 border-dashed border-red-300 dark:border-red-900/60 hover:border-red-500 bg-red-50/50 dark:bg-red-950/20 hover:bg-red-50 dark:hover:bg-red-950/40 text-red-700 dark:text-red-400 font-bold text-sm transition flex items-center justify-center gap-2"
                 >
                   <ScanBarcode className="w-4 h-4" />
-                  <span>Yana mahsulot skanerlash</span>
+                  <span>{t.cart.scanMore}</span>
                 </Link>
               </div>
             </div>
-          </div>
 
-          {/* O'ng tomon: Jami hisob-kitob (Sticky Summary Card) */}
+            {/* O'ng tomon: Jami hisob-kitob (Sticky Summary Card) */}
             <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xl shadow-red-500/5 sticky top-24 space-y-4">
               <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
                 <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">
@@ -387,14 +417,14 @@ export default function CartPage() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsOrderModalOpen(false)}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
               />
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="fixed inset-x-4 top-[10%] sm:top-[15%] max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-2xl z-50 p-6 border border-slate-100 dark:border-slate-800 overflow-hidden"
+                className="fixed inset-x-4 top-[8%] sm:top-[12%] max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-2xl z-50 p-6 border border-slate-100 dark:border-slate-800 overflow-hidden"
               >
                 <div className="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
                   <div className="flex items-center gap-2 text-slate-900 dark:text-white font-extrabold text-lg">
@@ -409,84 +439,123 @@ export default function CartPage() {
                   </button>
                 </div>
 
-                {/* Oxirida savatda qancha chiqayotgani (Grand Total Banner) */}
-                <div className="bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white rounded-2xl p-4 mb-4 text-center shadow-lg shadow-red-500/20">
-                  <div className="text-[10.5px] font-bold text-red-100 uppercase tracking-widest">
-                    {t.cart.totalToPay}
-                  </div>
-                  <div className="font-price font-black text-3xl sm:text-4xl text-white mt-1 tracking-tight">
-                    {BRAND_CONFIG.currency.format(totalSum)}
-                  </div>
-                  <div className="text-xs font-semibold text-red-100 mt-1 flex items-center justify-center gap-2">
-                    <span>{totalItems} {t.cashier.quantityCol.toLowerCase()}</span>
-                    {totalSavings > 0 && (
-                      <span className="bg-white/20 px-2 py-0.5 rounded-full text-[11px] font-bold text-white">
-                        {t.cart.savings} -{BRAND_CONFIG.currency.format(totalSavings)}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                {!isOrderPaid ? (
+                  <>
+                    {/* Oxirida savatda qancha chiqayotgani (Grand Total Banner) */}
+                    <div className="bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white rounded-2xl p-4 mb-4 text-center shadow-lg shadow-red-500/20">
+                      <div className="text-[10.5px] font-bold text-red-100 uppercase tracking-widest">
+                        {t.cart.totalToPay}
+                      </div>
+                      <div className="font-price font-black text-3xl sm:text-4xl text-white mt-1 tracking-tight">
+                        {BRAND_CONFIG.currency.format(totalSum)}
+                      </div>
+                      <div className="text-xs font-semibold text-red-100 mt-1 flex items-center justify-center gap-2">
+                        <span>{totalItems} {t.cashier.quantityCol.toLowerCase()}</span>
+                        {totalSavings > 0 && (
+                          <span className="bg-white/20 px-2 py-0.5 rounded-full text-[11px] font-bold text-white">
+                            {t.cart.savings} -{BRAND_CONFIG.currency.format(totalSavings)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
 
-                {/* Kassa shtrix / QR kodi tanlagichi va haqiqiy Barcode / QR renderer */}
-                <div className="bg-slate-50 dark:bg-slate-800/60 rounded-3xl p-4 sm:p-5 text-center border-2 border-red-500/20 mb-5">
-                  <div className="flex items-center justify-center gap-2 mb-3">
+                    {/* Kassa shtrix / QR kodi tanlagichi va haqiqiy Barcode / QR renderer */}
+                    <div className="bg-slate-50 dark:bg-slate-800/80 rounded-3xl p-4 sm:p-5 text-center border-2 border-red-500/20 dark:border-red-500/30 mb-4">
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <button
+                          type="button"
+                          onClick={() => setCodeType("BARCODE")}
+                          className={`px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                            codeType === "BARCODE"
+                              ? "bg-red-600 text-white shadow-md shadow-red-500/30"
+                              : "bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
+                          }`}
+                        >
+                          <ScanBarcode className="w-3.5 h-3.5" />
+                          <span>{t.cart.barcodeTab}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCodeType("QR")}
+                          className={`px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                            codeType === "QR"
+                              ? "bg-red-600 text-white shadow-md shadow-red-500/30"
+                              : "bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
+                          }`}
+                        >
+                          <QrCode className="w-3.5 h-3.5" />
+                          <span>{t.cart.qrTab}</span>
+                        </button>
+                      </div>
+
+                      <div className="flex justify-center my-3">
+                        {codeType === "BARCODE" ? (
+                          <BarcodeSvg value={orderCode} width={300} height={85} className="w-full max-w-[320px]" />
+                        ) : (
+                          <QrCodeSvg value={orderCode} size={160} />
+                        )}
+                      </div>
+
+                      <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 font-semibold max-w-xs mx-auto leading-relaxed flex items-center justify-center gap-1.5">
+                        <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                        <span>{t.cart.cashierInstruction}</span>
+                      </div>
+                    </div>
+
+                    {/* Kassir skaneri kutilmoqda (Avtomatik tasdiqlash bloki - mijoz tasdiqlash tugmasini bosishi shart emas) */}
+                    <div className="flex flex-col items-center gap-2.5 py-1 text-center">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/80 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
+                        <span className="relative flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                        </span>
+                        <span>{t.cart.waitingCashierTitle}</span>
+                      </div>
+                      <p className="text-[11.5px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
+                        {t.cart.waitingCashierDesc}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setIsOrderModalOpen(false)}
+                        className="w-full mt-2 py-3 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition cursor-pointer"
+                      >
+                        {t.cart.backToCart}
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  /* TO'LOV MUVAFFAQIYATLI BO'LGANDA (KASSIR TASDIQLAGANDA) */
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="py-4 text-center space-y-4"
+                  >
+                    <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                      <CheckCircle className="w-10 h-10" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                        {t.cart.orderPaidTitle}
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
+                        {t.cart.orderPaidDesc}
+                      </p>
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-3 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                      Kassa kodi: <span className="font-mono font-bold text-red-600 dark:text-red-400">{orderCode}</span>
+                    </div>
                     <button
                       type="button"
-                      onClick={() => setCodeType("BARCODE")}
-                      className={`px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                        codeType === "BARCODE"
-                          ? "bg-red-600 text-white shadow-md shadow-red-500/30"
-                          : "bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
-                      }`}
+                      onClick={() => {
+                        setIsOrderModalOpen(false);
+                        setIsOrderPaid(false);
+                      }}
+                      className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-sm shadow-lg shadow-emerald-500/25 hover:opacity-95 transition cursor-pointer"
                     >
-                      <ScanBarcode className="w-3.5 h-3.5" />
-                      <span>{t.cart.barcodeTab}</span>
+                      {t.cart.closeBtn}
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => setCodeType("QR")}
-                      className={`px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                        codeType === "QR"
-                          ? "bg-red-600 text-white shadow-md shadow-red-500/30"
-                          : "bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
-                      }`}
-                    >
-                      <QrCode className="w-3.5 h-3.5" />
-                      <span>{t.cart.qrTab}</span>
-                    </button>
-                  </div>
-
-                  <div className="flex justify-center my-3">
-                    {codeType === "BARCODE" ? (
-                      <BarcodeSvg value={orderCode} width={300} height={85} className="w-full max-w-[320px]" />
-                    ) : (
-                      <QrCodeSvg value={orderCode} size={160} />
-                    )}
-                  </div>
-
-                  <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 font-semibold max-w-xs mx-auto leading-relaxed flex items-center justify-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>{t.cart.cashierInstruction}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2.5">
-                  <button
-                    type="button"
-                    onClick={handleConfirmOrder}
-                    className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-blue-900 text-white font-bold text-sm shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/35 active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <CheckCircle className="w-4 h-4" />
-                    <span>{t.cart.confirmOrder}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsOrderModalOpen(false)}
-                    className="w-full py-2.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer"
-                  >
-                    {t.cart.backToCart}
-                  </button>
-                </div>
+                  </motion.div>
+                )}
               </motion.div>
             </>
           )}
@@ -496,4 +565,3 @@ export default function CartPage() {
     </div>
   );
 }
-

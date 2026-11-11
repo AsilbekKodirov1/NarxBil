@@ -157,13 +157,13 @@ export function BudgetController({ currentTotal }: BudgetControllerProps) {
   const diff = Math.abs((budget || 0) - currentTotal);
 
   let statusColor = "bg-emerald-500";
-  let statusBg = "bg-emerald-50 border-emerald-200/70 text-emerald-800";
+  let statusBg = "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/70 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300";
   if (percentage >= 75 && percentage < 100) {
     statusColor = "bg-amber-500";
-    statusBg = "bg-amber-50 border-amber-200/70 text-amber-800";
+    statusBg = "bg-amber-50 dark:bg-amber-950/40 border-amber-200/70 dark:border-amber-800 text-amber-800 dark:text-amber-300";
   } else if (isOver) {
     statusColor = "bg-rose-500";
-    statusBg = "bg-rose-50 border-rose-200/70 text-rose-800";
+    statusBg = "bg-rose-50 dark:bg-rose-950/40 border-rose-200/70 dark:border-rose-800 text-rose-800 dark:text-rose-300";
   }
 
   return (
@@ -186,7 +186,7 @@ export function BudgetController({ currentTotal }: BudgetControllerProps) {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-2.5 bg-black/10 rounded-full overflow-hidden mb-2 relative">
+      <div className="w-full h-2.5 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden mb-2 relative">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
@@ -198,12 +198,12 @@ export function BudgetController({ currentTotal }: BudgetControllerProps) {
       {/* Holat xabari */}
       <div className="flex items-center justify-between text-xs font-bold">
         {isOver ? (
-          <div className="flex items-center gap-1.5 text-rose-700">
+          <div className="flex items-center gap-1.5 text-rose-700 dark:text-rose-300">
             <AlertTriangle className="w-4 h-4 animate-bounce" />
             <span>Limitdan oshdi: +{BRAND_CONFIG.currency.format(diff)}</span>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 text-emerald-700">
+          <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
             <CheckCircle2 className="w-4 h-4" />
             <span>Qolgan byudjet: {BRAND_CONFIG.currency.format(diff)}</span>
           </div>

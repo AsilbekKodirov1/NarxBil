@@ -16,6 +16,7 @@ import { playSuccessChime } from "@/lib/audio";
 import { FastBarcodeScanner } from "@/lib/scanner-engine";
 import { ProductBottomSheet, ScannedProductData } from "./ProductBottomSheet";
 import { ManualBarcodeInput } from "./ManualBarcodeInput";
+import { saveLocalScanHistory } from "@/lib/scanHistory";
 import { useToast } from "@/components/ui/Toast";
 
 export function BarcodeScanner() {
@@ -66,6 +67,7 @@ export function BarcodeScanner() {
 
         setScannedProduct(data.product);
         setNotFoundBarcode(null);
+        saveLocalScanHistory(data.product);
       } else {
         setNotFoundBarcode(barcode);
         setScannedProduct(null);
